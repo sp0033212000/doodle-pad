@@ -1,0 +1,30 @@
+.statusbar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 4px 12px;
+  font-size: 12px;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  color: #555;
+}
+
+.statusbar .zoom {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.statusbar .zoom button {
+  height: 20px;
+  min-width: 22px;
+  padding: 0 4px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  font-size: 12px;
+  color: inherit;
+  cursor: pointer;
+}
+.statusbar .zoom button:hover { background: var(--accent-soft); border-color: var(--border); }
+.statusbar .zoom .zoom-label { min-width: 48px; }

@@ -1,0 +1,136 @@
+.stage {
+  flex: 1;
+  overflow: auto;
+  background: var(--canvas-bg);
+  padding: 16px;
+  touch-action: none;   /* 兩指捏合 / 平移由程式處理 */
+}
+
+/* sizer 撐出縮放後的大小；holder 以 transform 縮放，內部一律使用畫布像素 */
+.canvas-sizer {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.canvas-holder {
+  --zoom: 1;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .35);
+  background: #fff;
+}
+.canvas-holder canvas { display: block; }
+.canvas-holder.pixelated canvas { image-rendering: pixelated; }
+#draw { touch-action: none; }
+#overlay { position: absolute; left: 0; top: 0; pointer-events: none; }
+
+/* 以下尺寸除以 --zoom，讓控制項在任何縮放下都維持相同的螢幕大小 */
+.resize-handle {
+  position: absolute;
+  right: calc(-6px / var(--zoom));
+  bottom: calc(-6px / var(--zoom));
+  width: calc(12px / var(--zoom));
+  height: calc(12px / var(--zoom));
+  background: #fff;
+  border: calc(1px / var(--zoom)) solid #555;
+  cursor: nwse-resize;
+  z-index: 3;
+}
+
+/* ---------- 選取範圍 ---------- */
+.selection-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.sel-box {
+  display: none;
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+}
+.sel-box .obj-bar { display: flex; pointer-events: auto; }
+.sel-box.bar-inside .obj-bar {
+  top: calc(6px / var(--zoom));
+  left: calc(6px / var(--zoom));
+}
+
+/* 文字工具的輸入框 */
+.text-input {
+  position: absolute;
+  display: none;
+  background: rgba(255, 255, 255, .7);
+  border: 1px dashed var(--accent);
+  outline: none;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  line-height: 1.2;
+  resize: none;
+  overflow: hidden;
+  white-space: pre;
+  z-index: 2;
+}
+
+/* ---------- 貼上的物件（可編輯，直到鎖定） ---------- */
+.paste-obj {
+  position: absolute;
+  cursor: move;
+  touch-action: none;
+  z-index: 2;
+}
+.paste-obj > canvas { display: block; width: 100%; height: 100%; }
+.paste-obj:hover { outline: calc(1px / var(--zoom)) dashed rgba(47, 111, 222, .55); }
+.paste-obj.selected {
+  outline: calc(1px / var(--zoom)) dashed var(--accent);
+  box-shadow: 0 0 0 calc(1px / var(--zoom)) rgba(255, 255, 255, .8);
+}
+
+/* 選取時出現的操作列（鎖定 / 剪下 / 複製 / 刪除） */
+.obj-bar {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: calc(-36px / var(--zoom));
+  gap: 4px;
+  white-space: nowrap;
+  cursor: default;
+  transform: scale(calc(1 / var(--zoom)));
+  transform-origin: 0 0;
+}
+.paste-obj.bar-inside .obj-bar {
+  top: calc(6px / var(--zoom));
+  left: calc(6px / var(--zoom));
+}
+.paste-obj.selected .obj-bar { display: flex; }
+.obj-btn {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+}
+.obj-btn:hover { background: var(--accent-soft); }
+.obj-btn.lock { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
+/* 右下角縮放把手 */
+.obj-resize {
+  display: none;
+  position: absolute;
+  right: calc(-5px / var(--zoom));
+  bottom: calc(-5px / var(--zoom));
+  width: calc(10px / var(--zoom));
+  height: calc(10px / var(--zoom));
+  background: #fff;
+  border: calc(1px / var(--zoom)) solid var(--accent);
+  cursor: nwse-resize;
+}
+.paste-obj.selected .obj-resize { display: block; }
