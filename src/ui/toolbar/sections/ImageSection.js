@@ -16,7 +16,9 @@ export function createImageSection(app) {
     onClick: () => openResizeDialog(app),
   });
 
-  const sync = () => { cropBtn.disabled = !app.store.get('hasRegion'); };
+  const sync = () => {
+    cropBtn.disabled = !app.store.get('hasRegion');
+  };
   app.store.on('hasRegion', sync);
   sync();
 

@@ -6,7 +6,10 @@ test.beforeEach(async ({ page }) => openApp(page));
 async function stroke(page: import('@playwright/test').Page, y: number) {
   await selectTool(page, 'brush');
   await setSize(page, 6);
-  await drag(page, [[50, y], [250, y]]);
+  await drag(page, [
+    [50, y],
+    [250, y],
+  ]);
 }
 
 test('快捷鍵復原與重做', async ({ page }) => {
@@ -44,9 +47,16 @@ test('調整滑桿後 Cmd+Z 仍然有效', async ({ page }) => {
 test('中文輸入法下 Cmd+Z 仍然有效（以實體按鍵判斷）', async ({ page }) => {
   await stroke(page, 100);
   await page.evaluate(() => {
-    window.dispatchEvent(new KeyboardEvent('keydown', {
-      key: 'ㄈ', code: 'KeyZ', metaKey: true, ctrlKey: true, bubbles: true, cancelable: true,
-    }));
+    window.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'ㄈ',
+        code: 'KeyZ',
+        metaKey: true,
+        ctrlKey: true,
+        bubbles: true,
+        cancelable: true,
+      }),
+    );
   });
   expect(await pixel(page, 150, 100)).toBe(WHITE);
 });

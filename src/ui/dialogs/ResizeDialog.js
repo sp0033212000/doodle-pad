@@ -1,4 +1,4 @@
-import { h } from '../../utils/dom.js';
+import { h } from '../../engine/utils/dom';
 import { openDialog } from '../components/dialog.js';
 
 /**
@@ -25,23 +25,24 @@ export function openResizeDialog(app) {
 
   /** 依輸入值算出新的像素尺寸 */
   function result() {
-    const vw = +inW.value || 0, vh = +inH.value || 0;
-    const nw = unit === 'percent' ? ow * vw / 100 : vw;
-    const nh = unit === 'percent' ? oh * vh / 100 : vh;
+    const vw = +inW.value || 0,
+      vh = +inH.value || 0;
+    const nw = unit === 'percent' ? (ow * vw) / 100 : vw;
+    const nh = unit === 'percent' ? (oh * vh) / 100 : vh;
     return { nw: app.image.clampSize(nw), nh: app.image.clampSize(nh) };
   }
 
   function renderPreview() {
     const { nw, nh } = result();
-    preview.textContent = `目前 ${ow} × ${oh} px　→　新尺寸 ${nw} × ${nh} px`;
+    preview.textContent = `目前 ${ow} × ${oh} px → 新尺寸 ${nw} × ${nh} px`;
   }
 
   function switchUnit(next) {
     const { nw, nh } = result();
     unit = next;
     if (unit === 'percent') {
-      inW.value = Math.round(nw / ow * 100);
-      inH.value = Math.round(nh / oh * 100);
+      inW.value = Math.round((nw / ow) * 100);
+      inH.value = Math.round((nh / oh) * 100);
     } else {
       inW.value = nw;
       inH.value = nh;
@@ -68,8 +69,13 @@ export function openResizeDialog(app) {
   openDialog({
     title: `調整大小 — ${target.label}`,
     body: [
-      h('div', { class: 'dialog-row' }, h('span', { class: 'dialog-label' }, '單位'),
-        unitRadio('percent', '百分比'), unitRadio('pixel', '像素')),
+      h(
+        'div',
+        { class: 'dialog-row' },
+        h('span', { class: 'dialog-label' }, '單位'),
+        unitRadio('percent', '百分比'),
+        unitRadio('pixel', '像素'),
+      ),
       h('div', { class: 'dialog-row' }, h('span', { class: 'dialog-label' }, '水平'), inW),
       h('div', { class: 'dialog-row' }, h('span', { class: 'dialog-label' }, '垂直'), inH),
       h('label', { class: 'dialog-row check' }, keep, '維持長寬比'),

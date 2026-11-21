@@ -1,4 +1,4 @@
-import { h } from '../../utils/dom.js';
+import { h } from '../../engine/utils/dom';
 import { createFileSection } from './sections/FileSection.js';
 import { createEditSection } from './sections/EditSection.js';
 import { createImageSection } from './sections/ImageSection.js';
@@ -17,5 +17,9 @@ export const DEFAULT_SECTIONS = [
 ];
 
 export function createToolbar(app, sections = DEFAULT_SECTIONS) {
-  return h('div', { class: 'toolbar' }, sections.map(create => create(app)));
+  return h(
+    'div',
+    { class: 'toolbar' },
+    sections.map(create => create(app)),
+  );
 }

@@ -9,11 +9,17 @@
   --canvas-bg: #9aa4b1;
 }
 
-* { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; }
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
 
 body {
-  font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+  font-family: -apple-system, 'PingFang TC', 'Microsoft JhengHei', sans-serif;
   background: var(--bg);
   color: var(--text);
   user-select: none;
@@ -25,8 +31,17 @@ body {
   flex-direction: column;
 }
 
-button:disabled { opacity: .4; cursor: default; }
+button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
 
 /* 不顯示滑鼠點擊造成的焦點框與觸控高亮；鍵盤 Tab 導覽 (:focus-visible) 仍保留 */
-* { -webkit-tap-highlight-color: transparent; }
-div:focus, canvas:focus, button:focus:not(:focus-visible) { outline: none; }
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+div:focus,
+canvas:focus,
+button:focus:not(:focus-visible) {
+  outline: none;
+}
