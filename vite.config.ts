@@ -15,7 +15,8 @@ export default defineConfig(({ command, isPreview }) => ({
       manifest: {
         name: '塗鴉板 Doodle Pad',
         short_name: 'Doodle Pad',
-        description: '受傳統小畫家啟發的網頁繪圖 app',
+        description: '免費、免安裝的線上繪圖工具，受傳統小畫家啟發',
+        categories: ['graphics', 'productivity'],
         lang: 'zh-Hant',
         start_url: '.',
         scope: '.',
@@ -31,6 +32,8 @@ export default defineConfig(({ command, isPreview }) => ({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}'],
+        // 社群分享圖只給爬蟲用，不需要離線快取
+        globIgnores: ['**/og-image.png'],
       },
     }),
   ],
