@@ -37,6 +37,9 @@ test('縮放後繪圖座標仍正確', async ({ page }) => {
   await setSize(page, 1);
   await clickAt(page, 60, 60);
   expect(await pixel(page, 60, 60)).toBe(BLACK);
-  await drag(page, [[70, 80], [120, 80]]);
+  await drag(page, [
+    [70, 80],
+    [120, 80],
+  ]);
   expect(await pixel(page, 95, 80)).toBe(BLACK);
 });

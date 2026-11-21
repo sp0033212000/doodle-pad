@@ -1,7 +1,15 @@
 import { test, expect, type Page } from '@playwright/test';
 import {
-  openApp, drag, pixel, canvasSize, selectTool, drawFilledRect, pasteImage, action,
-  RED, PALETTE,
+  openApp,
+  drag,
+  pixel,
+  canvasSize,
+  selectTool,
+  drawFilledRect,
+  pasteImage,
+  action,
+  RED,
+  PALETTE,
 } from './helpers';
 
 test.beforeEach(async ({ page }) => openApp(page));
@@ -15,7 +23,10 @@ test('裁切成選取範圍，並可復原', async ({ page }) => {
   const before = await canvasSize(page);
   await drawFilledRect(page, PALETTE.red, [100, 100], [200, 180]);
   await selectTool(page, 'select');
-  await drag(page, [[80, 80], [240, 220]]);
+  await drag(page, [
+    [80, 80],
+    [240, 220],
+  ]);
   await expect(page.locator('[data-action=crop]')).toBeEnabled();
   await page.keyboard.press('ControlOrMeta+Shift+x');
   expect(await canvasSize(page)).toEqual({ w: 160, h: 140 });
@@ -48,7 +59,9 @@ test('調整選取物件的大小（像素）', async ({ page }) => {
   await page.locator('.dialog .num').nth(0).fill('200');
   await expect(page.locator('.dialog .num').nth(1)).toHaveValue('160');
   await page.keyboard.press('Enter');
-  const size = await page.locator('.paste-obj').evaluate(el => [(el as HTMLElement).style.width, (el as HTMLElement).style.height]);
+  const size = await page
+    .locator('.paste-obj')
+    .evaluate(el => [(el as HTMLElement).style.width, (el as HTMLElement).style.height]);
   expect(size).toEqual(['200px', '160px']);
 });
 

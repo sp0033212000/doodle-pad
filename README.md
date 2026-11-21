@@ -7,48 +7,67 @@
 
 ```bash
 npm install
-npm run dev      # 開發伺服器 http://localhost:5173
-npm run build    # 輸出到 dist/
-npm run test:e2e # Playwright 驗收測試（對建置後的網站執行）
+npm run dev        # 開發伺服器 http://localhost:5173
+npm run build      # 輸出到 dist/
+npm test           # 型別檢查 + lint + 單元測試 + E2E
+npm run test:unit  # Vitest：引擎的純邏輯
+npm run test:e2e   # Playwright：對建置後的網站做驗收測試
 ```
 
-CI（`.github/workflows/ci.yml`）：每次推送與 PR 都會跑 E2E 測試；推送到 `main` 且測試通過才部署到 GitHub Pages。
+CI（`.github/workflows/ci.yml`）：每次推送與 PR 都會跑型別檢查、ESLint、Prettier、單元測試與 E2E；
+推送到 `main` 且全部通過才部署到 GitHub Pages。
 
-## 專案結構
+## 架構
+
+分兩層：**繪圖引擎**是純 TypeScript，不依賴任何框架，負責畫布、工具、復原紀錄與所有輸入事件；
+**介面**用 Vue 3 + Pinia + vue-i18n，只負責工具列、狀態列與對話框。引擎以 `markRaw` 保存，
+不讓 Vue 的響應式系統追蹤繪圖時的大量運算；Pinia store 鏡像引擎狀態供元件讀取。
 
 ```
 src/
-├── main.js                 組裝入口：建立 app 物件、掛載各模組
-├── config.js               常數（調色盤、粗細範圍、預設狀態…）
-├── core/
-│   ├── store.js            狀態管理 get / set / on
-│   ├── history.js          復原 / 重做
-│   └── shortcuts.js        鍵盤快捷鍵
-├── canvas/
-│   ├── canvasManager.js    主畫布 + 預覽層 API
-│   ├── interaction.js      指標事件 → 目前工具
-│   └── resizeHandle.js     右下角調整大小把手
-├── tools/                  每個工具一個檔案，index.js 為註冊表
-├── services/
-│   ├── fileService.js      新增 / 開啟 / 儲存 / 拖曳開檔
-│   └── clipboard.js        剪貼簿貼上（浮動圖層）
-├── ui/
-│   ├── components/         共用元件（group、button）
-│   ├── toolbar/
-│   │   ├── Toolbar.js      上方工具列，依 DEFAULT_SECTIONS 排列
-│   │   └── sections/       檔案、編輯、工具、選項、色彩 各區塊
-│   └── StatusBar.js
-├── utils/                  dom、color、floodFill、image
-└── styles/                 base / toolbar / canvas / statusbar
+├── engine/                 繪圖引擎（純 TypeScript，不依賴介面框架）
+│   ├── index.ts            createEngine() / startEngine()
+│   ├── types.ts            App、Tool、AppState 等型別
+│   ├── config.ts           常數與預設狀態
+│   ├── core/
+│   │   ├── store.ts        狀態管理 get / set / on
+│   │   ├── history.ts      復原紀錄（操作紀錄 + 區域 patch）
+│   │   ├── assets.ts       圖片庫（內容雜湊 id、去重複、回收）
+│   │   ├── shortcuts.ts    鍵盤快捷鍵（以實體按鍵判斷，不受輸入法影響）
+│   │   └── focusGuard.ts   防止點擊時元素取得焦點
+│   ├── canvas/             畫布、指標事件、物件圖層、選取範圍、縮放
+│   ├── tools/              每個工具一個檔案，index.ts 為註冊表
+│   ├── services/           剪貼簿、開檔存檔、裁切與調整大小
+│   └── utils/              像素運算、flood fill、雜湊、DOM 小工具
+│   └── i18n.ts             引擎 DOM 的翻譯鍵（由介面層提供翻譯）
+├── App.vue                 建立引擎、掛載畫布
+├── components/             Vue 元件：工具列各區塊、狀態列、對話框
+├── stores/editor.ts        Pinia：鏡像引擎狀態，動作轉交引擎
+├── composables/            介面邏輯（例如調整大小的換算）
+├── i18n/                   vue-i18n 語系檔
+└── styles/
+tests/
+├── unit/                   Vitest
+└── e2e/                    Playwright（選擇器契約見 helpers.ts）
 ```
 
-## 擴充方式
+### 復原紀錄（`engine/core/history.ts`）
 
-- **新增工具**：在 `src/tools/` 建立檔案，匯出 `{ id, name, icon, key, cursor, onDown, onMove, onUp }`，加入 `tools/index.js` 的 `TOOLS` 陣列。按鈕與快捷鍵會自動出現。
-- **新增工具列區塊**：在 `ui/toolbar/sections/` 寫一個 `createXxxSection(app)` 回傳 DOM，加入 `Toolbar.js` 的 `DEFAULT_SECTIONS`。
+每一步不存整張畫布，只記錄「改了什麼」：
+
+- **畫布**：被改到那塊區域「改之前 / 改之後」的像素；畫布尺寸改變時才存整張。
+- **物件**：每個物件改之前 / 改之後的狀態（位置、大小、引用的圖片 id）。圖片本身存在圖片庫，
+  相同內容只存一份，不再被物件或紀錄引用時自動回收。
+- 拖曳類操作以 `beginGroup()` / `endGroup()` 合併成同一步；一般操作在事件處理結束後自動完成。
+- 上限：最近 100 步；總容量超過 200 MB 時回報 `historyOverQuota`。
+
+### 擴充方式
+
+- **新增工具**：在 `src/engine/tools/` 建立檔案，匯出符合 `Tool` 介面的物件，加入 `tools/index.ts` 的 `TOOLS`。
+  按鈕與快捷鍵會自動出現。
 - 模組之間透過 `app.store` 溝通：`store.set('size', 5)`、`store.on('size', fn)`。
 
-## 選取工具（`tools/select.js`、`canvas/selection.js`）
+## 選取工具（`engine/tools/select.ts`、`engine/canvas/selection.ts`）
 
 - **⬚ 矩形選取**（M）、**➰ 套索**（Q，自由手繪框選）、**🪄 魔術棒**（W，點一下選取顏色相近的相連區域）
 - 選取後出現螞蟻線與操作列：✂️ 剪下、📄 複製、⤢ 轉為物件、🗑 刪除
@@ -57,21 +76,21 @@ src/
 - `Delete` 清除內容、`Esc` 取消、`Ctrl/⌘+A` 全選
 - 挖空的地方以「次色」填滿
 
-## 影像：裁切 / 調整大小（`services/imageOps.js`、`ui/dialogs/ResizeDialog.js`）
+## 影像：裁切 / 調整大小（`engine/services/imageOps.ts`）
 
 - **⌗ 裁切**（`Ctrl/⌘+Shift+X`，或選取操作列上的按鈕）：把畫布裁成選取範圍；套索 / 魔術棒選取時，範圍外以次色填滿
 - **⤡ 調整大小**：以百分比或像素設定，可維持長寬比。作用對象依序為
   選取的物件 → 選取範圍（挖出成物件後縮放）→ 整張圖片
 - 裁切 / 縮放整張圖片時，未鎖定的物件會跟著位移 / 縮放；皆可復原
 
-## 縮放畫布（`canvas/zoom.js`）
+## 縮放畫布（`engine/canvas/zoom.ts`）
 
 - 觸控板兩指捏合、觸控螢幕兩指捏合（同時可兩指拖曳平移）
 - `Ctrl/⌘ + 滾輪`、`Ctrl/⌘ + =` / `-` / `0`（重設 100%）
 - 狀態列右下角 `− 100% +`；範圍 10% – 800%，200% 以上顯示像素格
 - 只改變檢視，不改變畫布實際像素；縮放時以手指 / 游標位置為中心
 
-## 貼上物件（`canvas/objectLayer.js`）
+## 貼上物件（`engine/canvas/objectLayer.ts`）
 
 - `Ctrl/⌘+V` 或工具列「📋 貼上」→ 圖片成為浮在畫布上的**物件**
 - 物件失去焦點後仍保留，可隨時再點選來移動、縮放（右下角把手，Shift 保持比例）、方向鍵微調

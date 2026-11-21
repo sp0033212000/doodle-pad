@@ -1,7 +1,7 @@
 .dialog-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(20, 28, 40, .35);
+  background: rgba(20, 28, 40, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,7 +14,7 @@
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 10px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, .3);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
   user-select: text;
 }
 
@@ -33,10 +33,25 @@
   font-size: 13px;
 }
 
-.dialog-row { display: flex; align-items: center; gap: 10px; }
-.dialog-row.check { gap: 6px; cursor: pointer; }
-.dialog-label { width: 36px; color: var(--muted); }
-.dialog-row .radio { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+.dialog-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dialog-row.check {
+  gap: 6px;
+  cursor: pointer;
+}
+.dialog-label {
+  width: 36px;
+  color: var(--muted);
+}
+.dialog-row .radio {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
 .dialog .num {
   width: 110px;
   height: 28px;
@@ -45,8 +60,14 @@
   border-radius: 6px;
   font-size: 13px;
 }
-.dialog .num:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
-.dialog-note { color: var(--muted); font-size: 12px; }
+.dialog .num:focus {
+  outline: 2px solid var(--accent-soft);
+  border-color: var(--accent);
+}
+.dialog-note {
+  color: var(--muted);
+  font-size: 12px;
+}
 
 .dialog-actions {
   display: flex;
@@ -54,6 +75,15 @@
   gap: 8px;
   padding: 10px 16px 14px;
 }
-.dialog-actions .act { height: 30px; min-width: 64px; }
-.dialog-actions .act.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-.dialog-actions .act.primary:hover { background: #2a62c6; }
+.dialog-actions .act {
+  height: 30px;
+  min-width: 64px;
+}
+.dialog-actions .act.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.dialog-actions .act.primary:hover {
+  background: #2a62c6;
+}

@@ -26,5 +26,10 @@
   color: inherit;
   cursor: pointer;
 }
-.statusbar .zoom button:hover { background: var(--accent-soft); border-color: var(--border); }
-.statusbar .zoom .zoom-label { min-width: 48px; }
+.statusbar .zoom button:hover {
+  background: var(--accent-soft);
+  border-color: var(--border);
+}
+.statusbar .zoom .zoom-label {
+  min-width: 48px;
+}

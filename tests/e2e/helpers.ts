@@ -56,10 +56,15 @@ export async function clickAt(page: Page, x: number, y: number) {
 }
 
 export async function pixel(page: Page, x: number, y: number) {
-  return page.locator('#draw').evaluate((c, [px, py]) => {
-    const ctx = (c as HTMLCanvasElement).getContext('2d')!;
-    return Array.from(ctx.getImageData(px, py, 1, 1).data).slice(0, 3).join(',');
-  }, [x, y]);
+  return page.locator('#draw').evaluate(
+    (c, [px, py]) => {
+      const ctx = (c as HTMLCanvasElement).getContext('2d')!;
+      return Array.from(ctx.getImageData(px, py, 1, 1).data)
+        .slice(0, 3)
+        .join(',');
+    },
+    [x, y],
+  );
 }
 
 export async function canvasSize(page: Page) {
@@ -71,12 +76,15 @@ export async function canvasSize(page: Page) {
 
 /** 某範圍內非白色像素的數量 */
 export async function inkCount(page: Page, x: number, y: number, w: number, h: number) {
-  return page.locator('#draw').evaluate((c, [x0, y0, ww, hh]) => {
-    const d = (c as HTMLCanvasElement).getContext('2d')!.getImageData(x0, y0, ww, hh).data;
-    let n = 0;
-    for (let i = 0; i < d.length; i += 4) if (d[i] < 250 || d[i + 1] < 250 || d[i + 2] < 250) n++;
-    return n;
-  }, [x, y, w, h]);
+  return page.locator('#draw').evaluate(
+    (c, [x0, y0, ww, hh]) => {
+      const d = (c as HTMLCanvasElement).getContext('2d')!.getImageData(x0, y0, ww, hh).data;
+      let n = 0;
+      for (let i = 0; i < d.length; i += 4) if (d[i] < 250 || d[i + 1] < 250 || d[i + 2] < 250) n++;
+      return n;
+    },
+    [x, y, w, h],
+  );
 }
 
 export const selectTool = (page: Page, id: string) => page.click(`[data-tool=${id}]`);
@@ -88,29 +96,41 @@ export const setShapeMode = (page: Page, mode: 'stroke' | 'fill' | 'both') =>
 
 /** 透過 paste 事件貼上一張純色圖片；clipboardData 為空時會貼上內部剪貼簿 */
 export async function pasteImage(page: Page, w: number, h: number, color: string) {
-  await page.evaluate(async ([ww, hh, col]) => {
-    const c = document.createElement('canvas');
-    c.width = ww as number;
-    c.height = hh as number;
-    const ctx = c.getContext('2d')!;
-    ctx.fillStyle = col as string;
-    ctx.fillRect(0, 0, ww as number, hh as number);
-    const blob = await new Promise<Blob>(r => c.toBlob(b => r(b!)));
-    const dt = new DataTransfer();
-    dt.items.add(new File([blob], 'p.png', { type: 'image/png' }));
-    window.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }));
-  }, [w, h, color]);
+  await page.evaluate(
+    async ([ww, hh, col]) => {
+      const c = document.createElement('canvas');
+      c.width = ww as number;
+      c.height = hh as number;
+      const ctx = c.getContext('2d')!;
+      ctx.fillStyle = col as string;
+      ctx.fillRect(0, 0, ww as number, hh as number);
+      const blob = await new Promise<Blob>(r => c.toBlob(b => r(b!)));
+      const dt = new DataTransfer();
+      dt.items.add(new File([blob], 'p.png', { type: 'image/png' }));
+      window.dispatchEvent(
+        new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }),
+      );
+    },
+    [w, h, color],
+  );
   await expect(page.locator('.paste-obj.selected')).toHaveCount(1);
 }
 
 export async function pasteInternal(page: Page) {
   await page.evaluate(() => {
-    window.dispatchEvent(new ClipboardEvent('paste', { clipboardData: new DataTransfer(), bubbles: true, cancelable: true }));
+    window.dispatchEvent(
+      new ClipboardEvent('paste', { clipboardData: new DataTransfer(), bubbles: true, cancelable: true }),
+    );
   });
 }
 
 /** 畫一個填滿的紅色矩形 */
-export async function drawFilledRect(page: Page, color: number, from: [number, number], to: [number, number]) {
+export async function drawFilledRect(
+  page: Page,
+  color: number,
+  from: [number, number],
+  to: [number, number],
+) {
   await setShapeMode(page, 'fill');
   await selectTool(page, 'rect');
   await pickColor(page, color);

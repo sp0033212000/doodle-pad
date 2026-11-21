@@ -17,7 +17,9 @@
   padding: 4px 8px;
   border-right: 1px solid var(--border);
 }
-.group:last-child { border-right: 0; }
+.group:last-child {
+  border-right: 0;
+}
 .group-body {
   display: flex;
   gap: 3px;
@@ -26,10 +28,14 @@
   justify-content: center;
   flex: 1;
 }
-.group-label { font-size: 11px; color: var(--muted); }
+.group-label {
+  font-size: 11px;
+  color: var(--muted);
+}
 
 /* ---------- 按鈕 ---------- */
-button.tool, button.act {
+button.tool,
+button.act {
   min-width: 34px;
   height: 34px;
   padding: 0 8px;
@@ -40,9 +46,19 @@ button.tool, button.act {
   cursor: pointer;
   color: var(--text);
 }
-button.act { font-size: 13px; border-color: var(--border); background: #fff; }
-button.tool:hover, button.act:hover:not(:disabled) { background: var(--accent-soft); }
-button.tool.active { background: var(--accent-soft); border-color: var(--accent); }
+button.act {
+  font-size: 13px;
+  border-color: var(--border);
+  background: #fff;
+}
+button.tool:hover,
+button.act:hover:not(:disabled) {
+  background: var(--accent-soft);
+}
+button.tool.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
 
 /* ---------- 工具 ---------- */
 .group-body.tools-grid {
@@ -52,14 +68,37 @@ button.tool.active { background: var(--accent-soft); border-color: var(--accent)
 }
 
 /* ---------- 選項 ---------- */
-.group-body.options { flex-direction: column; gap: 6px; }
-.size-wrap { display: flex; align-items: center; gap: 6px; font-size: 12px; }
-.size-wrap input[type=range] { width: 110px; }
-.fill-opt { font-size: 12px; display: flex; gap: 4px; align-items: center; }
+.group-body.options {
+  flex-direction: column;
+  gap: 6px;
+}
+.size-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.size-wrap input[type='range'] {
+  width: 110px;
+}
+.fill-opt {
+  font-size: 12px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
 
 /* ---------- 色彩 ---------- */
-.group-body.colors { gap: 8px; flex-wrap: nowrap; }
-.current { position: relative; width: 44px; height: 44px; flex: none; }
+.group-body.colors {
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+.current {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex: none;
+}
 .current .sw {
   position: absolute;
   width: 28px;
@@ -69,9 +108,20 @@ button.tool.active { background: var(--accent-soft); border-color: var(--accent)
   border-radius: 4px;
   cursor: pointer;
 }
-.current .primary { top: 0; left: 0; z-index: 2; }
-.current .secondary { bottom: 0; right: 0; }
-.palette { display: grid; grid-template-columns: repeat(14, 18px); gap: 2px; }
+.current .primary {
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+.current .secondary {
+  bottom: 0;
+  right: 0;
+}
+.palette {
+  display: grid;
+  grid-template-columns: repeat(14, 18px);
+  gap: 2px;
+}
 .palette div {
   width: 18px;
   height: 18px;
@@ -79,8 +129,10 @@ button.tool.active { background: var(--accent-soft); border-color: var(--accent)
   border-radius: 3px;
   cursor: pointer;
 }
-.palette div:hover { outline: 2px solid var(--accent); }
-input[type=color] {
+.palette div:hover {
+  outline: 2px solid var(--accent);
+}
+input[type='color'] {
   width: 34px;
   height: 34px;
   padding: 0;

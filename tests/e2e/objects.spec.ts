@@ -9,7 +9,8 @@ async function dragBy(page: Page, selector: string, dx: number, dy: number) {
   const box = await page.locator(selector).first().boundingBox();
   if (!box) throw new Error(`${selector} not visible`);
   // 從中心開始拖曳（物件靠近頂端時，操作列會放在物件內的左上角）
-  const sx = box.x + box.width / 2, sy = box.y + box.height / 2;
+  const sx = box.x + box.width / 2,
+    sy = box.y + box.height / 2;
   await page.mouse.move(sx, sy);
   await page.mouse.down();
   await page.mouse.move(sx + dx / 2, sy + dy / 2);
@@ -17,14 +18,17 @@ async function dragBy(page: Page, selector: string, dx: number, dy: number) {
   await page.mouse.up();
 }
 
-const rect = (page: Page) => obj(page).first().evaluate(el => {
-  const s = (el as HTMLElement).style;
-  return [parseInt(s.left), parseInt(s.top), parseInt(s.width), parseInt(s.height)];
-});
+const rect = (page: Page) =>
+  obj(page)
+    .first()
+    .evaluate(el => {
+      const s = (el as HTMLElement).style;
+      return [parseInt(s.left), parseInt(s.top), parseInt(s.width), parseInt(s.height)];
+    });
 
 test('貼上的圖片成為可編輯物件，失焦後仍保留', async ({ page }) => {
   await pasteImage(page, 100, 80, '#3f48cc');
-  expect(await pixel(page, 10, 10)).toBe(WHITE);          // 尚未畫進畫布
+  expect(await pixel(page, 10, 10)).toBe(WHITE); // 尚未畫進畫布
   await page.keyboard.press('Escape');
   await expect(obj(page)).toHaveCount(1);
   await expect(obj(page)).not.toHaveClass(/selected/);
@@ -38,7 +42,7 @@ test('物件可移動、縮放，鎖定後才畫進畫布，並可復原', async
   await dragBy(page, '.obj-resize', 50, 40);
   expect(await rect(page)).toEqual([100, 50, 150, 120]);
 
-  await page.keyboard.press('Enter');                      // 鎖定
+  await page.keyboard.press('Enter'); // 鎖定
   await expect(obj(page)).toHaveCount(0);
   expect(await pixel(page, 200, 100)).toBe(BLUE);
 
@@ -62,14 +66,20 @@ test('物件複製後貼上會錯開，剪下後貼回原位', async ({ page }) 
   await page.keyboard.press('ControlOrMeta+c');
   await pasteInternal(page);
   await expect(obj(page)).toHaveCount(2);
-  const second = await obj(page).nth(1).evaluate(el => (el as HTMLElement).style.left);
+  const second = await obj(page)
+    .nth(1)
+    .evaluate(el => (el as HTMLElement).style.left);
   expect(second).toBe('10px');
 
   await page.keyboard.press('ControlOrMeta+x');
   await expect(obj(page)).toHaveCount(1);
   await pasteInternal(page);
   await expect(obj(page)).toHaveCount(2);
-  expect(await obj(page).nth(1).evaluate(el => (el as HTMLElement).style.left)).toBe('10px');
+  expect(
+    await obj(page)
+      .nth(1)
+      .evaluate(el => (el as HTMLElement).style.left),
+  ).toBe('10px');
 });
 
 test('貼上比畫布大的圖片時，只擴大不足的那一邊', async ({ page }) => {
