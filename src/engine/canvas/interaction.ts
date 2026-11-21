@@ -19,7 +19,7 @@ export function bindInteraction(app: App) {
 
   canvas.addEventListener('pointerdown', e => {
     if (e.button !== 0 && e.button !== 2) return;
-    if (session || app.isPinching) return;
+    if (session || app.isPinching || app.store.get('readOnly')) return;
     e.preventDefault();
     app.finishPending();
 

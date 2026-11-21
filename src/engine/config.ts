@@ -66,4 +66,6 @@ export const DEFAULT_STATE: AppState = {
   hasSelection: false,
   hasRegion: false,
   canPasteInternal: false,
+  revision: 0,
+  readOnly: false,
 };

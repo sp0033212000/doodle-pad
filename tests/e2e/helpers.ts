@@ -27,6 +27,7 @@ export async function openApp(page: Page) {
   page.on('dialog', d => d.accept());
   await page.goto('./');
   await expect(page.locator('#draw')).toBeVisible();
+  await expect(page.locator('body[data-ready=true]')).toBeAttached();
 }
 
 /** 畫布像素座標 → 螢幕座標（考慮縮放） */

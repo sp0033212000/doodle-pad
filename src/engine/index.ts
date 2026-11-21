@@ -20,9 +20,22 @@ import { h, clamp } from './utils/dom';
 export type { App, AppState, Tool, Point, Rect, ShapeMode } from './types';
 export { PALETTE, SHAPE_MODES, SIZE_RANGE, DEFAULT_STATE } from './config';
 export { TOOLS, getTool } from './tools';
-export { newCanvas, saveCanvas, openImage, renderComposite } from './services/fileService';
+export {
+  newCanvas,
+  saveCanvas,
+  openImage,
+  openFile,
+  exportProject,
+  importProject,
+  renderComposite,
+} from './services/fileService';
+export { PROJECT_EXTENSION } from './persistence/projectFile';
 export { setTranslator, applyLabels, type Translator } from './i18n';
 export type { ResizeTarget } from './services/imageOps';
+export { createAutosave, type Autosave } from './persistence/autosave';
+export { acquireTabLock } from './persistence/tabLock';
+export { captureDocument, applyDocument, type DocumentSnapshot } from './persistence/document';
+export { HISTORY_LIMITS } from './config';
 
 /**
  * 建立繪圖引擎（不依賴任何介面框架）。
@@ -84,6 +97,7 @@ export function createEngine(initial: Partial<AppState> = {}): App {
       store.set('canRedo', s.canRedo);
       store.set('historyBytes', s.bytes);
       store.set('historyOverQuota', s.overQuota);
+      store.set('revision', store.get('revision') + 1);
     },
     // 紀錄被丟棄後，回收不再被任何物件或紀錄引用的圖片
     onDiscard: () => app.assets.gc([...app.objects.assetIds(), ...app.history.referencedAssets()]),

@@ -14,9 +14,11 @@ export default {
     new: '新增',
     newTitle: '新增（清空畫布）',
     open: '開啟',
-    openTitle: '開啟圖片',
+    openTitle: '開啟圖片或 .doodle 專案檔',
     save: '儲存',
     saveTitle: '儲存為 PNG (Ctrl/⌘+S)',
+    export: '匯出專案',
+    exportTitle: '匯出 .doodle 專案檔（保留可編輯的物件）',
   },
   edit: {
     undoTitle: '復原 (Ctrl/⌘+Z)',
@@ -91,6 +93,28 @@ export default {
     keepRatio: '維持長寬比',
     preview: '目前 {ow} × {oh} px → 新尺寸 {nw} × {nh} px',
   },
+  readOnly: {
+    message: '這份作品已在其他分頁開啟，此分頁為唯讀。關閉其他分頁後即可在這裡編輯。',
+  },
+  quota: {
+    title: '復原紀錄容量已滿',
+    message: '復原紀錄已使用約 {used} MB，超過上限 {limit} MB。',
+    hint: '清空復原紀錄會保留目前的作品，但無法再復原之前的步驟。',
+    clear: '清空復原紀錄',
+    later: '稍後',
+    export: '匯出專案檔…',
+    clearWithoutExport: '不匯出，直接清空復原紀錄',
+  },
+  project: {
+    exportTitle: '匯出專案檔',
+    export: '匯出',
+    exportMessage: '專案檔（.doodle）會保留畫布、尚未鎖定的物件與工具設定，之後可用「開啟」繼續編輯。',
+    includeHistory: '包含復原紀錄',
+    includeHistoryHint: '包含後檔案會比較大，但開啟後可以復原之前的步驟。',
+    exportedTitle: '已匯出專案檔',
+    clearHistoryQuestion: '要清空復原紀錄來釋放瀏覽器空間嗎？',
+    keepHistory: '保留',
+  },
   engine: {
     obj: {
       lock: '鎖定到畫布',
@@ -121,6 +145,8 @@ export default {
       clipboardUnsupported: '此瀏覽器不支援從按鈕讀取剪貼簿，請改用 Ctrl/⌘+V 貼上。',
       clipboardEmpty: '剪貼簿裡沒有圖片。',
       clipboardFailed: '無法讀取剪貼簿（{error}）。\n請改用 Ctrl/⌘+V 貼上。',
+      confirmImport: '開啟專案檔會取代目前的作品，確定嗎？',
+      invalidProject: '無法開啟專案檔（{error}）。',
     },
   },
 };

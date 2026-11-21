@@ -6,7 +6,7 @@ import { useI18n } from 'vue-i18n';
  * 模態對話框外框。Enter = 確定、Esc = 取消、點背景 = 取消。
  * 對話框開啟時，引擎的快捷鍵會自動停用（見 engine/utils/keys 的 shouldIgnore）。
  */
-defineProps<{ title: string }>();
+defineProps<{ title: string; okLabel?: string; cancelLabel?: string }>();
 const emit = defineEmits<{ ok: []; cancel: [] }>();
 const { t } = useI18n();
 const dialog = ref<HTMLDivElement>();
@@ -38,10 +38,10 @@ onMounted(async () => {
         <div class="dialog-body"><slot /></div>
         <div class="dialog-actions">
           <button class="act" data-action="dialog-cancel" @click="emit('cancel')">
-            {{ t('dialog.cancel') }}
+            {{ cancelLabel ?? t('dialog.cancel') }}
           </button>
           <button class="act primary" data-action="dialog-ok" @click="emit('ok')">
-            {{ t('dialog.ok') }}
+            {{ okLabel ?? t('dialog.ok') }}
           </button>
         </div>
       </div>
