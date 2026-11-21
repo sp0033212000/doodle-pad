@@ -1,6 +1,9 @@
 export default {
   app: {
     title: '塗鴉板',
+    pageTitle: '塗鴉板 Doodle Pad｜免費線上繪圖工具',
+    description:
+      '塗鴉板 Doodle Pad 是免費、免安裝的線上繪圖工具，受傳統小畫家啟發：鉛筆、筆刷、圖形、油漆桶、套索與魔術棒選取、可編輯的貼上物件、裁切與調整大小。作品自動保存，支援 Apple Pencil 與離線使用。',
   },
   toolbar: {
     file: '檔案',

@@ -3,8 +3,41 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="description" content="受傳統小畫家啟發的網頁繪圖 app" />
+    <title>塗鴉板 Doodle Pad｜免費線上繪圖工具</title>
+    <meta
+      name="description"
+      content="塗鴉板 Doodle Pad 是免費、免安裝的線上繪圖工具，受傳統小畫家啟發：鉛筆、筆刷、圖形、油漆桶、套索與魔術棒選取、可編輯的貼上物件、裁切與調整大小。作品自動保存，支援 Apple Pencil 與離線使用。"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://sp0033212000.github.io/doodle-pad/" />
     <meta name="theme-color" content="#2f6fde" />
+    <meta name="color-scheme" content="light" />
+
+    <!-- Open Graph（Facebook、LINE、Slack、Discord…分享預覽） -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="塗鴉板 Doodle Pad" />
+    <meta property="og:title" content="塗鴉板 Doodle Pad｜免費線上繪圖工具" />
+    <meta
+      property="og:description"
+      content="免安裝的線上繪圖工具：鉛筆、筆刷、套索、魔術棒、可編輯的貼上物件，自動保存、支援 Apple Pencil 與離線使用。"
+    />
+    <meta property="og:url" content="https://sp0033212000.github.io/doodle-pad/" />
+    <meta property="og:image" content="https://sp0033212000.github.io/doodle-pad/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="塗鴉板 Doodle Pad：免費的線上繪圖工具" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:locale:alternate" content="en_US" />
+
+    <!-- Twitter / X 卡片 -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="塗鴉板 Doodle Pad｜免費線上繪圖工具" />
+    <meta
+      name="twitter:description"
+      content="免安裝的線上繪圖工具：鉛筆、筆刷、套索、魔術棒、可編輯的貼上物件，自動保存、支援 Apple Pencil 與離線使用。"
+    />
+    <meta name="twitter:image" content="https://sp0033212000.github.io/doodle-pad/og-image.png" />
+
     <!-- iOS：加到主畫面後以全螢幕開啟 -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -12,10 +45,58 @@
     <meta name="apple-mobile-web-app-title" content="Doodle Pad" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <title>塗鴉板 Doodle Pad</title>
+
+    <!-- 結構化資料：讓搜尋引擎知道這是一個免費的網頁應用程式 -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "塗鴉板 Doodle Pad",
+        "alternateName": ["Doodle Pad", "塗鴉板"],
+        "url": "https://sp0033212000.github.io/doodle-pad/",
+        "description": "免費、免安裝的線上繪圖工具，受傳統小畫家啟發。",
+        "image": "https://sp0033212000.github.io/doodle-pad/og-image.png",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript and a modern browser",
+        "inLanguage": ["zh-Hant", "en"],
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "featureList": [
+          "鉛筆、筆刷、噴槍、橡皮擦、油漆桶、滴管、文字、直線、矩形、橢圓",
+          "矩形選取、套索、魔術棒，剪下 / 複製 / 貼上",
+          "可移動、縮放、鎖定的貼上物件",
+          "裁切與調整大小",
+          "自動保存與 .doodle 專案檔",
+          "Apple Pencil 壓力感應",
+          "離線使用（PWA）"
+        ],
+        "license": "https://opensource.org/licenses/MIT"
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>
+    <!-- 沒有 JavaScript 時顯示的說明（也提供搜尋引擎可讀的內容） -->
+    <noscript>
+      <main
+        style="
+          max-width: 640px;
+          margin: 48px auto;
+          padding: 0 16px;
+          font-family: sans-serif;
+          line-height: 1.6;
+        "
+      >
+        <h1>塗鴉板 Doodle Pad</h1>
+        <p>
+          免費、免安裝的線上繪圖工具，受傳統小畫家啟發。提供鉛筆、筆刷、圖形、油漆桶、矩形選取 / 套索 /
+          魔術棒、可編輯的貼上物件、裁切與調整大小；作品自動保存在瀏覽器中，支援 Apple Pencil 與離線使用。
+        </p>
+        <p>A free online drawing app inspired by classic Paint. Please enable JavaScript to use it.</p>
+        <p>請開啟 JavaScript 以使用塗鴉板。</p>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

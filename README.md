@@ -82,6 +82,15 @@ tests/
 - 「📂 開啟」或拖進畫布即可載入 `.doodle`（也可開啟一般圖片）
 - 復原紀錄超過容量上限時，提醒對話框會建議先匯出專案檔
 
+## SEO
+
+- `index.html`：標題、描述、canonical、robots、Open Graph 與 Twitter 卡片（分享圖 `public/og-image.png`，
+  由 `node scripts/generate-og-image.mjs` 產生）、`WebApplication` 結構化資料，以及沒有 JavaScript 時的說明文字
+- 切換語言時，頁面標題與描述跟著更新
+- `public/sitemap.xml`：專案網站在子路徑下，`robots.txt` 只在網域根目錄有效，
+  所以請到 [Google Search Console](https://search.google.com/search-console) 手動提交
+  `https://sp0033212000.github.io/doodle-pad/sitemap.xml`
+
 ## 語言
 
 - 繁體中文與英文；預設依瀏覽器語言（中文顯示繁中，其他顯示英文）

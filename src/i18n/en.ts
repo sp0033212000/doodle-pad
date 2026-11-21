@@ -3,6 +3,9 @@ import type { MessageSchema } from './index';
 const en: MessageSchema = {
   app: {
     title: 'Doodle Pad',
+    pageTitle: 'Doodle Pad — Free Online Drawing App',
+    description:
+      'Doodle Pad is a free online drawing app inspired by classic Paint: pencil, brush, shapes, fill, lasso and magic wand selection, editable pasted objects, crop and resize. Your work is saved automatically, with Apple Pencil support and offline use.',
   },
   toolbar: {
     file: 'File',

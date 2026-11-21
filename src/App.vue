@@ -49,7 +49,8 @@ watch(
   l => {
     applyLabels(engine.stage);
     document.documentElement.lang = l === 'en' ? 'en' : 'zh-Hant';
-    document.title = l === 'en' ? 'Doodle Pad' : '塗鴉板 Doodle Pad';
+    document.title = t('app.pageTitle');
+    document.querySelector('meta[name=description]')?.setAttribute('content', t('app.description'));
   },
   { immediate: true },
 );
