@@ -5,7 +5,6 @@ import { CANVAS_MAX } from '../config';
 
 export interface ResizeTarget {
   kind: 'object' | 'region' | 'image';
-  label: string;
   w: number;
   h: number;
   apply(nw: number, nh: number): void;
@@ -68,7 +67,6 @@ export function createImageOps(app: App) {
     if (id != null && rect) {
       return {
         kind: 'object',
-        label: '選取的物件',
         w: rect.w,
         h: rect.h,
         apply(nw, nh) {
@@ -82,7 +80,6 @@ export function createImageOps(app: App) {
     if (region) {
       return {
         kind: 'region',
-        label: '選取範圍',
         w: region.w,
         h: region.h,
         apply(nw, nh) {
@@ -94,7 +91,6 @@ export function createImageOps(app: App) {
     }
     return {
       kind: 'image',
-      label: '整張圖片',
       w: app.canvas.width,
       h: app.canvas.height,
       apply: resizeCanvas,

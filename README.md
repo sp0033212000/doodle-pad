@@ -19,6 +19,10 @@ CI（`.github/workflows/ci.yml`）：每次推送與 PR 都會跑型別檢查、
 
 ## 架構
 
+分兩層：**繪圖引擎**是純 TypeScript，不依賴任何框架，負責畫布、工具、復原紀錄與所有輸入事件；
+**介面**用 Vue 3 + Pinia + vue-i18n，只負責工具列、狀態列與對話框。引擎以 `markRaw` 保存，
+不讓 Vue 的響應式系統追蹤繪圖時的大量運算；Pinia store 鏡像引擎狀態供元件讀取。
+
 ```
 src/
 ├── engine/                 繪圖引擎（純 TypeScript，不依賴介面框架）
@@ -35,7 +39,12 @@ src/
 │   ├── tools/              每個工具一個檔案，index.ts 為註冊表
 │   ├── services/           剪貼簿、開檔存檔、裁切與調整大小
 │   └── utils/              像素運算、flood fill、雜湊、DOM 小工具
-├── ui/                     介面（工具列、狀態列、對話框）
+│   └── i18n.ts             引擎 DOM 的翻譯鍵（由介面層提供翻譯）
+├── App.vue                 建立引擎、掛載畫布
+├── components/             Vue 元件：工具列各區塊、狀態列、對話框
+├── stores/editor.ts        Pinia：鏡像引擎狀態，動作轉交引擎
+├── composables/            介面邏輯（例如調整大小的換算）
+├── i18n/                   vue-i18n 語系檔
 └── styles/
 tests/
 ├── unit/                   Vitest

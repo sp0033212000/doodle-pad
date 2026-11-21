@@ -1,10 +1,12 @@
 import type { App } from '../types';
 import { h } from '../utils/dom';
 import { CANVAS_MIN } from '../config';
+import { labelProps } from '../i18n';
 
 /** 畫布右下角的拖曳把手 */
 export function createResizeHandle(app: App) {
-  const handle = h('div', { class: 'resize-handle', title: '拖曳調整畫布大小' });
+  const l = labelProps({ title: 'engine.canvas.resizeTitle' });
+  const handle = h('div', { class: 'resize-handle', dataset: l.dataset, title: l.title });
   const c = app.canvas;
   let start: { x: number; y: number; w: number; h: number } | null = null;
 

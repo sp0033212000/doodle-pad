@@ -33,11 +33,7 @@ export const PALETTE = [
   '#90ee90',
 ] as const;
 
-export const SHAPE_MODES: { value: ShapeMode; label: string }[] = [
-  { value: 'stroke', label: '外框' },
-  { value: 'fill', label: '填滿' },
-  { value: 'both', label: '外框+填滿' },
-];
+export const SHAPE_MODES: ShapeMode[] = ['stroke', 'fill', 'both'];
 
 export const SIZE_RANGE = { min: 1, max: 60 } as const;
 export const FILL_TOLERANCE = 32;

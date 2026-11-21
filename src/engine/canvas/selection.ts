@@ -4,6 +4,7 @@ import { h, createCanvas2D } from '../utils/dom';
 import { hexToRgba } from '../utils/color';
 import { floodRegion } from '../utils/floodFill';
 import { keyOf, isMod, shouldIgnore } from '../utils/keys';
+import { labelProps } from '../i18n';
 import { type Region, rectRegion, regionFromFullMask, regionContains, regionOutline } from './selectionMask';
 
 /**
@@ -22,8 +23,18 @@ export function createSelection(app: App) {
   // ---------- DOM：螞蟻線圖層 + 操作列 ----------
   const layer = h('canvas', { class: 'selection-layer' });
   const lctx = layer.getContext('2d')!;
-  const btn = (action: string, label: string, title: string, fn: () => void) =>
-    h('button', { class: 'obj-btn', title, dataset: { action }, onClick: fn }, label);
+  const btn = (action: string, key: string, icon: string, fn: () => void, withText = true) => {
+    const l = labelProps({
+      icon,
+      text: withText ? `engine.sel.${key}` : undefined,
+      title: `engine.sel.${key}Title`,
+    });
+    return h(
+      'button',
+      { class: 'obj-btn', title: l.title, dataset: { action, ...l.dataset }, onClick: fn },
+      l.text,
+    );
+  };
   const bar = h(
     'div',
     {
@@ -33,11 +44,11 @@ export function createSelection(app: App) {
         e.stopPropagation();
       },
     },
-    btn('sel-cut', '✂️ 剪下', '剪下 (Ctrl/⌘+X)', () => cut()),
-    btn('sel-copy', '📄 複製', '複製 (Ctrl/⌘+C)', () => copy()),
-    btn('sel-lift', '⤢ 轉為物件', '挖出成為可移動的物件（也可直接拖曳選取範圍）', () => lift()),
-    btn('sel-crop', '⌗ 裁切', '把畫布裁切成選取範圍 (Ctrl/⌘+Shift+X)', () => app.image.crop()),
-    btn('sel-delete', '🗑', '刪除選取內容 (Delete)', () => erase()),
+    btn('sel-cut', 'cut', '✂️', () => cut()),
+    btn('sel-copy', 'copy', '📄', () => copy()),
+    btn('sel-lift', 'lift', '⤢', () => lift()),
+    btn('sel-crop', 'crop', '⌗', () => app.image.crop()),
+    btn('sel-delete', 'delete', '🗑', () => erase(), false),
   );
   const box = h('div', { class: 'sel-box' }, bar);
   holder.append(layer, box);

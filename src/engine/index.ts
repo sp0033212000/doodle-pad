@@ -21,6 +21,8 @@ export type { App, AppState, Tool, Point, Rect, ShapeMode } from './types';
 export { PALETTE, SHAPE_MODES, SIZE_RANGE, DEFAULT_STATE } from './config';
 export { TOOLS, getTool } from './tools';
 export { newCanvas, saveCanvas, openImage, renderComposite } from './services/fileService';
+export { setTranslator, applyLabels, type Translator } from './i18n';
+export type { ResizeTarget } from './services/imageOps';
 
 /**
  * 建立繪圖引擎（不依賴任何介面框架）。

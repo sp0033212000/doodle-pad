@@ -2,6 +2,7 @@ import type { App, Point, Rect, SizedImageSource } from '../types';
 import type { ObjectData } from '../canvas/objectLayer';
 import { loadImage } from '../utils/image';
 import { createCanvas2D } from '../utils/dom';
+import { tr } from '../i18n';
 
 const CASCADE = 10; // 重複貼上同一物件時的位移
 
@@ -82,7 +83,7 @@ export function createClipboard(app: App) {
     if (internal && fresh) return pasteInternal();
     if (!navigator.clipboard?.read) {
       if (internal) return pasteInternal();
-      notify('此瀏覽器不支援從按鈕讀取剪貼簿，請改用 Ctrl/⌘+V 貼上。');
+      notify(tr('engine.msg.clipboardUnsupported'));
       return;
     }
     try {
@@ -91,10 +92,10 @@ export function createClipboard(app: App) {
         if (type) return pasteBlob(await item.getType(type));
       }
       if (internal) pasteInternal();
-      else notify('剪貼簿裡沒有圖片。');
+      else notify(tr('engine.msg.clipboardEmpty'));
     } catch (err) {
       if (internal) pasteInternal();
-      else notify(`無法讀取剪貼簿（${(err as Error).message}）。\n請改用 Ctrl/⌘+V 貼上。`);
+      else notify(tr('engine.msg.clipboardFailed', { error: (err as Error).message }));
     }
   }
 

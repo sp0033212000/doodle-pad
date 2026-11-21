@@ -1,10 +1,11 @@
 import type { App } from '../types';
 import { loadImage } from '../utils/image';
 import { createCanvas2D } from '../utils/dom';
+import { tr } from '../i18n';
 
 export function newCanvas(app: App) {
   app.finishPending();
-  if (!window.confirm('確定要清空畫布嗎？（可用復原找回）')) return;
+  if (!window.confirm(tr('engine.msg.confirmNew'))) return;
   app.history.push();
   app.canvas.clear();
   app.objects.clear();

@@ -2,6 +2,7 @@ import type { App, Rect, SizedImageSource } from '../types';
 import type { ObjectState, ObjectsPort } from '../core/history';
 import { h } from '../utils/dom';
 import { keyOf, isMod, shouldIgnore } from '../utils/keys';
+import { labelProps } from '../i18n';
 
 const MIN_SIZE = 5;
 
@@ -88,18 +89,36 @@ export function createObjectLayer(app: App) {
     preview.getContext('2d')!.drawImage(source, 0, 0);
 
     const o = { ...state } as LiveObject;
-    const btn = (action: string, label: string, title: string, fn: () => void, extra = '') =>
-      h('button', { class: `obj-btn ${extra}`.trim(), dataset: { action }, title, onClick: fn }, label);
+    const btn = (
+      action: string,
+      label: { text?: string; title: string; icon: string },
+      fn: () => void,
+      extra = '',
+    ) => {
+      const l = labelProps(label);
+      return h(
+        'button',
+        { class: `obj-btn ${extra}`.trim(), dataset: { action, ...l.dataset }, title: l.title, onClick: fn },
+        l.text,
+      );
+    };
     const bar = h(
       'div',
       { class: 'obj-bar', onPointerdown: (e: Event) => e.stopPropagation() },
-      btn('obj-lock', '🔒 鎖定到畫布', '鎖定到畫布 (Enter)', () => lock(o.id), 'lock'),
-      btn('obj-cut', '✂️', '剪下 (Ctrl/⌘+X)', () => cut(o.id)),
-      btn('obj-copy', '📄', '複製 (Ctrl/⌘+C)', () => copy(o.id)),
-      btn('obj-delete', '🗑', '刪除 (Delete)', () => remove(o.id)),
+      btn(
+        'obj-lock',
+        { icon: '🔒', text: 'engine.obj.lock', title: 'engine.obj.lockTitle' },
+        () => lock(o.id),
+        'lock',
+      ),
+      btn('obj-cut', { icon: '✂️', title: 'engine.obj.cutTitle' }, () => cut(o.id)),
+      btn('obj-copy', { icon: '📄', title: 'engine.obj.copyTitle' }, () => copy(o.id)),
+      btn('obj-delete', { icon: '🗑', title: 'engine.obj.deleteTitle' }, () => remove(o.id)),
     );
-    const resizer = h('div', { class: 'obj-resize', title: '拖曳縮放（Shift 保持比例）' });
-    o.el = h('div', { class: 'paste-obj', title: '拖曳移動' }, preview, bar, resizer);
+    const rl = labelProps({ title: 'engine.obj.resizeTitle' });
+    const resizer = h('div', { class: 'obj-resize', dataset: rl.dataset, title: rl.title });
+    const ml = labelProps({ title: 'engine.obj.moveTitle' });
+    o.el = h('div', { class: 'paste-obj', dataset: ml.dataset, title: ml.title }, preview, bar, resizer);
 
     dragHandler(o.el, o, (s, dx, dy) => {
       o.x = Math.round(s.x + dx);
