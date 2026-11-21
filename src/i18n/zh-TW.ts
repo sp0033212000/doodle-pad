@@ -54,6 +54,7 @@ export default {
   options: {
     size: '粗細',
     shape: '圖形：',
+    penOnly: '只用筆畫圖（手指平移與縮放）',
     modes: {
       stroke: '外框',
       fill: '填滿',
@@ -64,6 +65,9 @@ export default {
     primaryTitle: '主要色彩（左鍵）；點一下自訂',
     secondaryTitle: '次要色彩（右鍵）；點一下互換 (X)',
     customTitle: '自訂色彩',
+    usingPrimary: '使用主色',
+    usingSecondary: '使用次色',
+    useSecondaryTitle: '切換左鍵 / 筆 / 手指使用主色或次色（觸控裝置沒有右鍵）',
   },
   status: {
     pos: '座標：{x}, {y}',

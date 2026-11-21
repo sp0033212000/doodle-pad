@@ -1,8 +1,8 @@
 import type { App, Point, Tool, ToolSession } from '../types';
-import { colorFor, strokeSegment } from './helpers';
+import { colorFor, sizeFor, strokeSegment } from './helpers';
 
 const draw = (app: App, a: Point, b: Point, s: ToolSession) =>
-  strokeSegment(app.canvas.ctx, a, b, colorFor(app, s.button), app.store.get('size'));
+  strokeSegment(app.canvas.ctx, a, b, colorFor(app, s.button), sizeFor(app, s));
 
 const brush: Tool = {
   id: 'brush',

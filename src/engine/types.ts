@@ -54,6 +54,14 @@ export interface AppState {
   revision: number;
   /** 唯讀模式（作品已在其他分頁開啟） */
   readOnly: boolean;
+  /** 只用筆（Apple Pencil）畫圖；手指用來平移與縮放 */
+  penOnly: boolean;
+  /** penOnly 是否由系統自動決定（使用者手動切換後為 false） */
+  penOnlyAuto: boolean;
+  /** 是否偵測過觸控筆 */
+  penDetected: boolean;
+  /** 左鍵 / 筆 / 手指改用次色（取代右鍵） */
+  useSecondary: boolean;
 }
 
 /** 一次指標操作（按下 → 放開）期間的狀態 */
@@ -66,6 +74,10 @@ export interface ToolSession {
   points?: Point[];
   liftId?: number | null;
   objStart?: Point | null;
+  /** mouse / pen / touch */
+  pointerType?: string;
+  /** 下筆力道 0–1（觸控筆才有意義） */
+  pressure?: number;
 }
 
 export interface Tool {
