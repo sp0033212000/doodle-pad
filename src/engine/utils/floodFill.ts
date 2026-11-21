@@ -59,17 +59,31 @@ export function floodRegion(
   return mask;
 }
 
-/** 依遮罩把像素填成指定顏色（直接修改 img） */
+/**
+ * 依遮罩填色（直接修改 img）。
+ * 半透明顏色會與原本的像素混色（source-over），而不是把像素變成半透明。
+ */
 export function fillMask(img: PixelBuffer, mask: Uint8Array, hex: string): void {
-  const [r, g, b, a] = hexToRgba(hex);
+  const [r, g, b, a8] = hexToRgba(hex);
+  const a = a8 / 255;
   const d = img.data;
   for (let p = 0; p < mask.length; p++) {
     if (!mask[p]) continue;
     const i = p * 4;
-    d[i] = r;
-    d[i + 1] = g;
-    d[i + 2] = b;
-    d[i + 3] = a;
+    if (a >= 1) {
+      d[i] = r;
+      d[i + 1] = g;
+      d[i + 2] = b;
+      d[i + 3] = 255;
+      continue;
+    }
+    const da = d[i + 3] / 255;
+    const oa = a + da * (1 - a);
+    const mix = (src: number, dst: number) => (oa ? (src * a + dst * da * (1 - a)) / oa : 0);
+    d[i] = mix(r, d[i]);
+    d[i + 1] = mix(g, d[i + 1]);
+    d[i + 2] = mix(b, d[i + 2]);
+    d[i + 3] = oa * 255;
   }
 }
 

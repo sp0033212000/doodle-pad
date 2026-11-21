@@ -1,5 +1,6 @@
 import type { App, Point, Tool, ToolSession } from '../types';
 import { otherColor, strokeSegment } from './helpers';
+import { opaque } from '../utils/color';
 
 const eraserSize = (app: App) => app.store.get('size') * 2;
 
@@ -14,7 +15,7 @@ function preview(app: App, p: Point) {
 
 // 橡皮擦以「次色」擦除（右鍵則用主色），與傳統小畫家相同
 const erase = (app: App, a: Point, b: Point, s: ToolSession) =>
-  strokeSegment(app.canvas.ctx, a, b, otherColor(app, s.button), eraserSize(app), 'square');
+  strokeSegment(app.canvas.ctx, a, b, opaque(otherColor(app, s.button)), eraserSize(app), 'square');
 
 const eraser: Tool = {
   id: 'eraser',

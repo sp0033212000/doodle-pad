@@ -16,6 +16,8 @@ import ResizeDialog from './components/dialogs/ResizeDialog.vue';
 import QuotaDialog from './components/dialogs/QuotaDialog.vue';
 import ExportDialog from './components/dialogs/ExportDialog.vue';
 import ClearHistoryDialog from './components/dialogs/ClearHistoryDialog.vue';
+import ColorEditor from './components/dialogs/ColorEditor.vue';
+import { usePaletteStore } from './stores/palette';
 
 const { t, locale } = useI18n();
 // 引擎產生的 DOM（物件 / 選取的操作列、提示訊息）也使用同一套翻譯
@@ -25,7 +27,12 @@ setTranslator((key, params) => t(key, params ?? {}));
 const engine = markRaw(createEngine());
 const editor = useEditorStore();
 editor.bind(engine);
-const { readOnly, historyOverQuota, dialog } = storeToRefs(editor);
+const { readOnly, historyOverQuota, dialog, primary, secondary } = storeToRefs(editor);
+
+// 記錄最近使用的顏色（不論從色盤、編輯色彩或滴管選取）
+const palette = usePaletteStore();
+watch(primary, c => palette.addRecent(c));
+watch(secondary, c => palette.addRecent(c));
 
 // 窄螢幕：側邊工具列 + 可展開的設定面板；寬螢幕：上方工具列
 const compact = useMediaQuery(COMPACT_QUERY);
@@ -78,6 +85,7 @@ watch(historyOverQuota, over => {
   <QuotaDialog v-if="dialog === 'quota'" @close="editor.closeDialog()" />
   <ExportDialog v-if="dialog === 'export'" @close="editor.closeDialog()" />
   <ClearHistoryDialog v-if="dialog === 'clearHistory'" @close="editor.closeDialog()" />
+  <ColorEditor v-if="dialog === 'colors'" @close="editor.closeDialog()" />
 </template>
 
 <style>

@@ -13,7 +13,7 @@ import {
 
 const PEN_ONLY_KEY = 'doodle-pad:penOnly';
 
-export type DialogName = 'resize' | 'quota' | 'export' | 'clearHistory';
+export type DialogName = 'resize' | 'quota' | 'export' | 'clearHistory' | 'colors';
 
 /**
  * 介面狀態（Pinia）。
@@ -23,6 +23,8 @@ export type DialogName = 'resize' | 'quota' | 'export' | 'clearHistory';
 export const useEditorStore = defineStore('editor', () => {
   const state = reactive<AppState>({ ...DEFAULT_STATE });
   const dialog = ref<DialogName | null>(null);
+  /** 編輯色彩對話框要編輯的是主色還是次色 */
+  const colorTarget = ref<'primary' | 'secondary'>('primary');
   let engine: App | null = null;
 
   function mirror<K extends keyof AppState>(app: App, key: K) {
@@ -60,6 +62,7 @@ export const useEditorStore = defineStore('editor', () => {
   return {
     ...toRefs(state),
     dialog,
+    colorTarget,
     bind,
     engine: e,
 
@@ -99,6 +102,10 @@ export const useEditorStore = defineStore('editor', () => {
 
     openDialog: (name: DialogName) => {
       dialog.value = name;
+    },
+    openColorEditor: (target: 'primary' | 'secondary') => {
+      colorTarget.value = target;
+      dialog.value = 'colors';
     },
     closeDialog: () => {
       dialog.value = null;
