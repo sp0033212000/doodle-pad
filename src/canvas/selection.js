@@ -21,16 +21,17 @@ export function createSelection(app) {
   // ---------- DOM：螞蟻線圖層 + 操作列 ----------
   const layer = h('canvas', { class: 'selection-layer' });
   const lctx = layer.getContext('2d');
-  const btn = (label, title, fn) => h('button', { class: 'obj-btn', title, onClick: fn }, label);
+  const btn = (action, label, title, fn) =>
+    h('button', { class: 'obj-btn', title, dataset: { action }, onClick: fn }, label);
   const bar = h('div', {
     class: 'obj-bar',
     onPointerdown: e => { e.preventDefault(); e.stopPropagation(); },
   },
-    btn('✂️ 剪下', '剪下 (Ctrl/⌘+X)', () => cut()),
-    btn('📄 複製', '複製 (Ctrl/⌘+C)', () => copy()),
-    btn('⤢ 轉為物件', '挖出成為可移動的物件（也可直接拖曳選取範圍）', () => lift()),
-    btn('⌗ 裁切', '把畫布裁切成選取範圍 (Ctrl/⌘+Shift+X)', () => app.image.crop()),
-    btn('🗑', '刪除選取內容 (Delete)', () => erase()),
+    btn('sel-cut', '✂️ 剪下', '剪下 (Ctrl/⌘+X)', () => cut()),
+    btn('sel-copy', '📄 複製', '複製 (Ctrl/⌘+C)', () => copy()),
+    btn('sel-lift', '⤢ 轉為物件', '挖出成為可移動的物件（也可直接拖曳選取範圍）', () => lift()),
+    btn('sel-crop', '⌗ 裁切', '把畫布裁切成選取範圍 (Ctrl/⌘+Shift+X)', () => app.image.crop()),
+    btn('sel-delete', '🗑', '刪除選取內容 (Delete)', () => erase()),
   );
   const box = h('div', { class: 'sel-box' }, bar);
   holder.append(layer, box);

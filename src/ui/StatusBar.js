@@ -7,11 +7,11 @@ export function createStatusBar(app) {
   const sizeEl = h('span');
   const toolEl = h('span');
 
-  const zoomLabel = h('button', { class: 'zoom-label', title: '重設為 100% (Ctrl/⌘+0)', onClick: () => app.zoom.reset() });
+  const zoomLabel = h('button', { class: 'zoom-label', dataset: { action: 'zoom-reset' }, title: '重設為 100% (Ctrl/⌘+0)', onClick: () => app.zoom.reset() });
   const zoomEl = h('span', { class: 'zoom' },
-    h('button', { title: '縮小 (Ctrl/⌘+-)', onClick: () => app.zoom.zoomOut() }, '−'),
+    h('button', { dataset: { action: 'zoom-out' }, title: '縮小 (Ctrl/⌘+-)', onClick: () => app.zoom.zoomOut() }, '−'),
     zoomLabel,
-    h('button', { title: '放大 (Ctrl/⌘+=)', onClick: () => app.zoom.zoomIn() }, '+'),
+    h('button', { dataset: { action: 'zoom-in' }, title: '放大 (Ctrl/⌘+=)', onClick: () => app.zoom.zoomIn() }, '+'),
   );
 
   const renderPos = p => { posEl.textContent = p ? `座標：${p.x}, ${p.y}` : '座標：-'; };

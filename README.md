@@ -9,7 +9,10 @@
 npm install
 npm run dev      # 開發伺服器 http://localhost:5173
 npm run build    # 輸出到 dist/
+npm run test:e2e # Playwright 驗收測試（對建置後的網站執行）
 ```
+
+CI（`.github/workflows/ci.yml`）：每次推送與 PR 都會跑 E2E 測試；推送到 `main` 且測試通過才部署到 GitHub Pages。
 
 ## 專案結構
 
