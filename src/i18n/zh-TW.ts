@@ -105,6 +105,16 @@ export default {
     export: '匯出專案檔…',
     clearWithoutExport: '不匯出，直接清空復原紀錄',
   },
+  side: {
+    menu: '檔案、影像與設定',
+    colors: '色彩與粗細',
+  },
+  pwa: {
+    offlineReady: '已可離線使用。',
+    needRefresh: '有新版本可以使用。',
+    reload: '重新整理',
+    close: '關閉',
+  },
   project: {
     exportTitle: '匯出專案檔',
     export: '匯出',

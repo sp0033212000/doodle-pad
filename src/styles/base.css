@@ -45,3 +45,23 @@ canvas:focus,
 button:focus:not(:focus-visible) {
   outline: none;
 }
+
+/* 觸控裝置：按鈕至少 44px，手指才好點 */
+@media (pointer: coarse) {
+  button.tool,
+  button.act {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .group-body.tools-grid {
+    grid-template-columns: repeat(7, 44px);
+  }
+  .statusbar .zoom button {
+    min-width: 36px;
+    height: 32px;
+  }
+  .obj-btn {
+    height: 36px;
+    min-width: 36px;
+  }
+}
