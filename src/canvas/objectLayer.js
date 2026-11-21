@@ -65,10 +65,10 @@ export function createObjectLayer(app) {
 
     const stop = e => e.stopPropagation();
     const bar = h('div', { class: 'obj-bar', onPointerdown: stop },
-      h('button', { class: 'obj-btn lock', title: '鎖定到畫布 (Enter)', onClick: () => lock(o.id) }, '🔒 鎖定到畫布'),
-      h('button', { class: 'obj-btn', title: '剪下 (Ctrl/⌘+X)', onClick: () => cut(o.id) }, '✂️'),
-      h('button', { class: 'obj-btn', title: '複製 (Ctrl/⌘+C)', onClick: () => copy(o.id) }, '📄'),
-      h('button', { class: 'obj-btn', title: '刪除 (Delete)', onClick: () => remove(o.id) }, '🗑'),
+      h('button', { class: 'obj-btn lock', dataset: { action: 'obj-lock' }, title: '鎖定到畫布 (Enter)', onClick: () => lock(o.id) }, '🔒 鎖定到畫布'),
+      h('button', { class: 'obj-btn', dataset: { action: 'obj-cut' }, title: '剪下 (Ctrl/⌘+X)', onClick: () => cut(o.id) }, '✂️'),
+      h('button', { class: 'obj-btn', dataset: { action: 'obj-copy' }, title: '複製 (Ctrl/⌘+C)', onClick: () => copy(o.id) }, '📄'),
+      h('button', { class: 'obj-btn', dataset: { action: 'obj-delete' }, title: '刪除 (Delete)', onClick: () => remove(o.id) }, '🗑'),
     );
     const resizer = h('div', { class: 'obj-resize', title: '拖曳縮放（Shift 保持比例）' });
     o.el = h('div', { class: 'paste-obj', title: '拖曳移動' }, preview, bar, resizer);

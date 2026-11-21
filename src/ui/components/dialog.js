@@ -13,8 +13,8 @@ export function openDialog({ title, body, okLabel = '確定', onOk }) {
     h('div', { class: 'dialog-title' }, title),
     h('div', { class: 'dialog-body' }, body),
     h('div', { class: 'dialog-actions' },
-      h('button', { class: 'act', onClick: close }, '取消'),
-      h('button', { class: 'act primary', onClick: ok }, okLabel),
+      h('button', { class: 'act', dataset: { action: 'dialog-cancel' }, onClick: close }, '取消'),
+      h('button', { class: 'act primary', dataset: { action: 'dialog-ok' }, onClick: ok }, okLabel),
     ),
   );
   const backdrop = h('div', {
