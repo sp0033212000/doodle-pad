@@ -2,15 +2,16 @@ import { defineStore } from 'pinia';
 import { markRaw, reactive, ref, toRefs } from 'vue';
 import {
   DEFAULT_STATE,
+  exportProject,
   newCanvas,
-  openImage,
+  openFile,
   saveCanvas,
   type App,
   type AppState,
   type ShapeMode,
 } from '../engine';
 
-export type DialogName = 'resize' | 'quota';
+export type DialogName = 'resize' | 'quota' | 'export' | 'clearHistory';
 
 /**
  * 介面狀態（Pinia）。
@@ -67,7 +68,8 @@ export const useEditorStore = defineStore('editor', () => {
 
     newCanvas: () => newCanvas(e()),
     save: () => saveCanvas(e()),
-    openFile: (file: File | null | undefined) => openImage(e(), file),
+    openFile: (file: File | null | undefined) => openFile(e(), file),
+    exportProject: (includeHistory: boolean) => exportProject(e(), { includeHistory }),
 
     openDialog: (name: DialogName) => {
       dialog.value = name;

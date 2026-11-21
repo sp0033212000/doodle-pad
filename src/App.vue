@@ -10,6 +10,8 @@ import StatusBar from './components/StatusBar.vue';
 import ReadOnlyBanner from './components/ReadOnlyBanner.vue';
 import ResizeDialog from './components/dialogs/ResizeDialog.vue';
 import QuotaDialog from './components/dialogs/QuotaDialog.vue';
+import ExportDialog from './components/dialogs/ExportDialog.vue';
+import ClearHistoryDialog from './components/dialogs/ClearHistoryDialog.vue';
 
 const { t } = useI18n();
 // 引擎產生的 DOM（物件 / 選取的操作列、提示訊息）也使用同一套翻譯
@@ -48,6 +50,8 @@ watch(historyOverQuota, over => {
   <StatusBar />
   <ResizeDialog v-if="dialog === 'resize'" @close="editor.closeDialog()" />
   <QuotaDialog v-if="dialog === 'quota'" @close="editor.closeDialog()" />
+  <ExportDialog v-if="dialog === 'export'" @close="editor.closeDialog()" />
+  <ClearHistoryDialog v-if="dialog === 'clearHistory'" @close="editor.closeDialog()" />
 </template>
 
 <style>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { PROJECT_EXTENSION } from '../../engine';
 import { useEditorStore } from '../../stores/editor';
 import ToolbarGroup from './ToolbarGroup.vue';
 
@@ -26,6 +27,14 @@ function onFile() {
     <button class="act" data-action="save" :title="t('file.saveTitle')" @click="editor.save()">
       💾 {{ t('file.save') }}
     </button>
-    <input ref="fileInput" type="file" accept="image/*" hidden @change="onFile" />
+    <button
+      class="act"
+      data-action="export-project"
+      :title="t('file.exportTitle')"
+      @click="editor.openDialog('export')"
+    >
+      📦 {{ t('file.export') }}
+    </button>
+    <input ref="fileInput" type="file" :accept="`image/*,${PROJECT_EXTENSION}`" hidden @change="onFile" />
   </ToolbarGroup>
 </template>

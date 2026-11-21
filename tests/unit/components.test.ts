@@ -71,8 +71,9 @@ describe('EditSection', () => {
 });
 
 describe('QuotaDialog', () => {
-  it('顯示目前容量，按「清空復原紀錄」會清空並關閉', async () => {
+  it('顯示目前容量；主要按鈕開啟匯出，也可以直接清空', async () => {
     engine.store.set('historyBytes', 250 * 1024 * 1024);
+    const editor = useEditorStore();
     const wrapper = mount(QuotaDialog, { global: { plugins: [pinia, i18n] }, attachTo: document.body });
     await nextTick();
     const dialog = document.body.querySelector('.dialog')!;
@@ -80,6 +81,9 @@ describe('QuotaDialog', () => {
     expect(dialog.textContent).toContain('200 MB');
 
     (document.body.querySelector('[data-action=dialog-ok]') as HTMLButtonElement).click();
+    expect(editor.dialog).toBe('export');
+
+    (document.body.querySelector('[data-action=quota-clear]') as HTMLButtonElement).click();
     expect(engine.history.clear).toHaveBeenCalled();
     expect(wrapper.emitted('close')).toHaveLength(1);
     wrapper.unmount();

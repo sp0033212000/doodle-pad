@@ -95,3 +95,14 @@
 .dialog-body .dialog-note {
   margin: 0;
 }
+
+.link-btn {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+}

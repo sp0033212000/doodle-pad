@@ -20,7 +20,16 @@ import { h, clamp } from './utils/dom';
 export type { App, AppState, Tool, Point, Rect, ShapeMode } from './types';
 export { PALETTE, SHAPE_MODES, SIZE_RANGE, DEFAULT_STATE } from './config';
 export { TOOLS, getTool } from './tools';
-export { newCanvas, saveCanvas, openImage, renderComposite } from './services/fileService';
+export {
+  newCanvas,
+  saveCanvas,
+  openImage,
+  openFile,
+  exportProject,
+  importProject,
+  renderComposite,
+} from './services/fileService';
+export { PROJECT_EXTENSION } from './persistence/projectFile';
 export { setTranslator, applyLabels, type Translator } from './i18n';
 export type { ResizeTarget } from './services/imageOps';
 export { createAutosave, type Autosave } from './persistence/autosave';
