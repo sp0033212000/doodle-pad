@@ -9,6 +9,9 @@ import AppToolbar from './components/toolbar/AppToolbar.vue';
 import StatusBar from './components/StatusBar.vue';
 import ReadOnlyBanner from './components/ReadOnlyBanner.vue';
 import UpdatePrompt from './components/UpdatePrompt.vue';
+import SideToolbar from './components/side/SideToolbar.vue';
+import SettingsDrawer from './components/side/SettingsDrawer.vue';
+import { useMediaQuery, COMPACT_QUERY } from './composables/useMediaQuery';
 import ResizeDialog from './components/dialogs/ResizeDialog.vue';
 import QuotaDialog from './components/dialogs/QuotaDialog.vue';
 import ExportDialog from './components/dialogs/ExportDialog.vue';
@@ -23,6 +26,11 @@ const engine = markRaw(createEngine());
 const editor = useEditorStore();
 editor.bind(engine);
 const { readOnly, historyOverQuota, dialog } = storeToRefs(editor);
+
+// 窄螢幕：側邊工具列 + 可展開的設定面板；寬螢幕：上方工具列
+const compact = useMediaQuery(COMPACT_QUERY);
+const drawerOpen = ref(false);
+watch(compact, c => !c && (drawerOpen.value = false));
 
 const persistence = usePersistence(engine);
 const host = ref<HTMLDivElement>();
@@ -46,8 +54,12 @@ watch(historyOverQuota, over => {
 
 <template>
   <ReadOnlyBanner v-if="readOnly" />
-  <AppToolbar />
-  <div ref="host" class="stage-host" />
+  <AppToolbar v-if="!compact" />
+  <div class="workspace">
+    <SideToolbar v-if="compact" :drawer-open="drawerOpen" @toggle-drawer="drawerOpen = !drawerOpen" />
+    <div ref="host" class="stage-host" />
+  </div>
+  <SettingsDrawer v-if="compact && drawerOpen" @close="drawerOpen = false" />
   <StatusBar />
   <UpdatePrompt />
   <ResizeDialog v-if="dialog === 'resize'" @close="editor.closeDialog()" />
@@ -57,7 +69,15 @@ watch(historyOverQuota, over => {
 </template>
 
 <style>
+.workspace {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
 .stage-host {
   display: contents;
+}
+.workspace .stage {
+  min-width: 0;
 }
 </style>
