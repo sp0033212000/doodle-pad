@@ -113,6 +113,9 @@ export default {
     menu: '檔案、影像與設定',
     colors: '色彩與粗細',
   },
+  language: {
+    label: '語言',
+  },
   pwa: {
     offlineReady: '已可離線使用。',
     needRefresh: '有新版本可以使用。',
