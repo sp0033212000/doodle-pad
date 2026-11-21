@@ -103,6 +103,7 @@ export function createClipboard(app: App) {
   window.addEventListener('paste', e => {
     const tag = (e.target as HTMLElement | null)?.tagName;
     if (tag === 'TEXTAREA' || tag === 'INPUT') return; // 讓文字框正常貼上文字
+    if (app.store.get('readOnly')) return;
     if (internal && fresh) {
       e.preventDefault();
       pasteInternal();

@@ -87,3 +87,11 @@
 .dialog-actions .act.primary:hover {
   background: #2a62c6;
 }
+
+.dialog-text {
+  margin: 0;
+  line-height: 1.5;
+}
+.dialog-body .dialog-note {
+  margin: 0;
+}

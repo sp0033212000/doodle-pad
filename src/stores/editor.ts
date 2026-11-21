@@ -10,7 +10,7 @@ import {
   type ShapeMode,
 } from '../engine';
 
-export type DialogName = 'resize';
+export type DialogName = 'resize' | 'quota';
 
 /**
  * 介面狀態（Pinia）。
@@ -59,6 +59,7 @@ export const useEditorStore = defineStore('editor', () => {
     copy: () => e().copy(),
     paste: () => e().clipboard.paste(),
     crop: () => e().image.crop(),
+    clearHistory: () => e().history.clear(),
 
     zoomIn: () => e().zoom.zoomIn(),
     zoomOut: () => e().zoom.zoomOut(),

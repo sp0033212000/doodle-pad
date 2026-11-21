@@ -91,6 +91,16 @@ export default {
     keepRatio: '維持長寬比',
     preview: '目前 {ow} × {oh} px → 新尺寸 {nw} × {nh} px',
   },
+  readOnly: {
+    message: '這份作品已在其他分頁開啟，此分頁為唯讀。關閉其他分頁後即可在這裡編輯。',
+  },
+  quota: {
+    title: '復原紀錄容量已滿',
+    message: '復原紀錄已使用約 {used} MB，超過上限 {limit} MB。',
+    hint: '清空復原紀錄會保留目前的作品，但無法再復原之前的步驟。',
+    clear: '清空復原紀錄',
+    later: '稍後',
+  },
   engine: {
     obj: {
       lock: '鎖定到畫布',

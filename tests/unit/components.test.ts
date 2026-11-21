@@ -9,6 +9,7 @@ import { createStore } from '../../src/engine/core/store';
 import { DEFAULT_STATE, TOOLS, type App, type AppState } from '../../src/engine';
 import ToolsSection from '../../src/components/toolbar/ToolsSection.vue';
 import EditSection from '../../src/components/toolbar/EditSection.vue';
+import QuotaDialog from '../../src/components/dialogs/QuotaDialog.vue';
 
 /** 只有 store 與少數方法的假引擎，足以驅動介面元件 */
 function fakeEngine() {
@@ -16,7 +17,7 @@ function fakeEngine() {
   const app = {
     store,
     setTool: vi.fn((id: string) => store.set('tool', id)),
-    history: { undo: vi.fn(), redo: vi.fn() },
+    history: { undo: vi.fn(), redo: vi.fn(), clear: vi.fn() },
     cut: vi.fn(),
     copy: vi.fn(),
   };
@@ -66,5 +67,21 @@ describe('EditSection', () => {
 
     await wrapper.find('[data-action=undo]').trigger('click');
     expect(engine.history.undo).toHaveBeenCalled();
+  });
+});
+
+describe('QuotaDialog', () => {
+  it('顯示目前容量，按「清空復原紀錄」會清空並關閉', async () => {
+    engine.store.set('historyBytes', 250 * 1024 * 1024);
+    const wrapper = mount(QuotaDialog, { global: { plugins: [pinia, i18n] }, attachTo: document.body });
+    await nextTick();
+    const dialog = document.body.querySelector('.dialog')!;
+    expect(dialog.textContent).toContain('250 MB');
+    expect(dialog.textContent).toContain('200 MB');
+
+    (document.body.querySelector('[data-action=dialog-ok]') as HTMLButtonElement).click();
+    expect(engine.history.clear).toHaveBeenCalled();
+    expect(wrapper.emitted('close')).toHaveLength(1);
+    wrapper.unmount();
   });
 });

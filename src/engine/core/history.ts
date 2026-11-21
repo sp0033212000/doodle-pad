@@ -54,6 +54,8 @@ export interface ObjectChange {
 }
 
 export interface HistoryEntry {
+  /** 穩定的序號（自動保存以此判斷哪些步驟已寫入） */
+  id: number;
   canvas: CanvasChange | null;
   objects: ObjectChange[];
   bytes: number;
@@ -128,6 +130,7 @@ export function createHistory(opts: HistoryOptions) {
   let redoStack: HistoryEntry[] = [];
   let pending: Pending | null = null;
   let groupDepth = 0;
+  let nextEntryId = 1;
 
   const fullPixels = () => canvas.getPixels(0, 0, canvas.width, canvas.height);
   const totalBytes = () =>
@@ -167,7 +170,12 @@ export function createHistory(opts: HistoryOptions) {
     const objectChanges = diffObjects(p.objects, objects.serialize());
     if (!change && objectChanges.length === 0) return null;
     const bytes = change ? bufferBytes(change.before) + bufferBytes(change.after) : 0;
-    return { canvas: change, objects: objectChanges, bytes: bytes + objectChanges.length * 64 };
+    return {
+      id: nextEntryId++,
+      canvas: change,
+      objects: objectChanges,
+      bytes: bytes + objectChanges.length * 64,
+    };
   }
 
   function apply(entry: HistoryEntry, side: 'before' | 'after') {
@@ -292,8 +300,9 @@ export function createHistory(opts: HistoryOptions) {
     },
 
     /** 目前的紀錄（供自動保存序列化） */
+    /** 目前已完成的紀錄（拖曳等操作進行中時不會強制完成） */
     entries() {
-      commit();
+      if (groupDepth === 0) commit();
       return { undo: [...undoStack], redo: [...redoStack] };
     },
 
@@ -302,9 +311,14 @@ export function createHistory(opts: HistoryOptions) {
       pending = null;
       undoStack = [...data.undo];
       redoStack = [...data.redo];
+      nextEntryId = Math.max(nextEntryId, ...undoStack.map(e => e.id + 1), ...redoStack.map(e => e.id + 1));
       notify();
     },
 
+    /** 是否有跨事件的操作（拖曳）正在進行 */
+    get busy() {
+      return groupDepth > 0;
+    },
     get bytes() {
       return totalBytes();
     },

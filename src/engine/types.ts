@@ -50,6 +50,10 @@ export interface AppState {
   hasSelection: boolean;
   hasRegion: boolean;
   canPasteInternal: boolean;
+  /** 每次文件內容改變就遞增（自動保存用） */
+  revision: number;
+  /** 唯讀模式（作品已在其他分頁開啟） */
+  readOnly: boolean;
 }
 
 /** 一次指標操作（按下 → 放開）期間的狀態 */

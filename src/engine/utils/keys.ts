@@ -50,6 +50,7 @@ export function isFormControl(el: EventTarget | null): boolean {
 export function shouldIgnore(e: KeyboardEvent): boolean {
   if (e.isComposing) return true;
   if (document.querySelector('.dialog-backdrop')) return true;
+  if (document.body.classList.contains('read-only')) return true;
   if (isTextField(e.target)) return true;
   return isFormControl(e.target) && !isMod(e);
 }
