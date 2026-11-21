@@ -82,6 +82,12 @@ tests/
 - 「📂 開啟」或拖進畫布即可載入 `.doodle`（也可開啟一般圖片）
 - 復原紀錄超過容量上限時，提醒對話框會建議先匯出專案檔
 
+## PWA
+
+- 可「加到主畫面」（iPad / iPhone / Android / 桌機 Chrome），以全螢幕開啟、離線也能使用
+- 第一次載入完成後顯示「已可離線使用」；有新版本時顯示提示，按「重新整理」才更新
+- 圖示由 `public/favicon.svg` 產生：`node scripts/generate-icons.mjs`
+
 ## 選取工具（`engine/tools/select.ts`、`engine/canvas/selection.ts`）
 
 - **⬚ 矩形選取**（M）、**➰ 套索**（Q，自由手繪框選）、**🪄 魔術棒**（W，點一下選取顏色相近的相連區域）

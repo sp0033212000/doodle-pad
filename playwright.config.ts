@@ -16,6 +16,8 @@ export default defineConfig({
   use: {
     baseURL: BASE,
     locale: 'zh-TW',
+    // 一般測試不啟用 service worker（避免快取影響）；PWA 測試會個別開啟
+    serviceWorkers: 'block',
     trace: 'retain-on-failure',
   },
   projects: [
