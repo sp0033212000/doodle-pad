@@ -7,7 +7,7 @@ import ToolbarGroup from './ToolbarGroup.vue';
 
 const { t } = useI18n();
 const editor = useEditorStore();
-const { size, shapeMode } = storeToRefs(editor);
+const { size, shapeMode, penOnly, penDetected } = storeToRefs(editor);
 
 const valueOf = (e: Event) => (e.target as HTMLInputElement | HTMLSelectElement).value;
 // 調整完交還焦點，鍵盤快捷鍵才能繼續使用
@@ -42,5 +42,14 @@ function onShapeMode(e: Event) {
         </option>
       </select>
     </div>
+    <label v-if="penDetected" class="fill-opt pen-opt">
+      <input
+        type="checkbox"
+        data-control="pen-only"
+        :checked="penOnly"
+        @change="editor.setPenOnly(($event.target as HTMLInputElement).checked)"
+      />
+      ✍️ {{ t('options.penOnly') }}
+    </label>
   </ToolbarGroup>
 </template>

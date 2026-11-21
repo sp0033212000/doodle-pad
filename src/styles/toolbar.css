@@ -141,3 +141,15 @@ input[type='color'] {
   background: #fff;
   cursor: pointer;
 }
+
+button.act.use-secondary {
+  min-width: 72px;
+  font-size: 12px;
+}
+button.act.use-secondary.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.pen-opt {
+  cursor: pointer;
+}

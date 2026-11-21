@@ -68,4 +68,8 @@ export const DEFAULT_STATE: AppState = {
   canPasteInternal: false,
   revision: 0,
   readOnly: false,
+  penOnly: false,
+  penOnlyAuto: true,
+  penDetected: false,
+  useSecondary: false,
 };

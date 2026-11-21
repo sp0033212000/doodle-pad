@@ -33,3 +33,12 @@
 .statusbar .zoom .zoom-label {
   min-width: 48px;
 }
+
+.statusbar .locale {
+  height: 22px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #fff;
+  color: inherit;
+}

@@ -92,6 +92,7 @@ export function createZoom(app: App, sizer: HTMLElement) {
     // ---------- 觸控螢幕兩指 ----------
     const touches = new Map<number, Point>();
     let pinch: { dist: number; zoom: number; mid: Point } | null = null;
+    let pan: Point | null = null;
 
     const midDist = () => {
       const [a, b] = [...touches.values()];
@@ -107,7 +108,14 @@ export function createZoom(app: App, sizer: HTMLElement) {
       e => {
         if (e.pointerType !== 'touch') return;
         touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        // 只用筆畫圖時，單指在畫布上拖曳 = 平移（物件與操作列仍可用手指操作）
+        const onControl = (e.target as Element).closest?.('.paste-obj, .obj-bar, .sel-box, .resize-handle');
+        if (touches.size === 1 && store.get('penOnly') && !onControl) {
+          pan = { x: e.clientX, y: e.clientY };
+          e.stopPropagation();
+        }
         if (touches.size === 2) {
+          pan = null;
           app.cancelStroke(); // 第一根手指可能已開始畫，撤銷它
           app.isPinching = true;
           const { mid, dist } = midDist();
@@ -123,6 +131,13 @@ export function createZoom(app: App, sizer: HTMLElement) {
       e => {
         if (!touches.has(e.pointerId)) return;
         touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        if (pan && touches.size === 1) {
+          st.scrollLeft -= e.clientX - pan.x;
+          st.scrollTop -= e.clientY - pan.y;
+          pan = { x: e.clientX, y: e.clientY };
+          e.stopPropagation();
+          return;
+        }
         if (!app.isPinching) return;
         e.stopPropagation();
         if (touches.size < 2 || !pinch) return;
@@ -139,6 +154,7 @@ export function createZoom(app: App, sizer: HTMLElement) {
       if (!touches.delete(e.pointerId)) return;
       if (app.isPinching) e.stopPropagation();
       if (touches.size < 2) pinch = null;
+      if (touches.size === 0) pan = null;
       if (touches.size === 0) app.isPinching = false; // 全部手指離開才恢復繪圖
     };
     st.addEventListener('pointerup', up, true);

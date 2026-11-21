@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import { nextTick } from 'vue';
-import { i18n } from '../../src/i18n';
+import { i18n, setLocale } from '../../src/i18n';
 import { useEditorStore } from '../../src/stores/editor';
 import { createStore } from '../../src/engine/core/store';
 import { DEFAULT_STATE, TOOLS, type App, type AppState } from '../../src/engine';
@@ -28,6 +28,7 @@ let pinia: ReturnType<typeof createPinia>;
 let engine: ReturnType<typeof fakeEngine>;
 
 beforeEach(() => {
+  setLocale('zh-TW');
   pinia = createPinia();
   setActivePinia(pinia);
   engine = fakeEngine();

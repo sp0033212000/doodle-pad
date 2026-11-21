@@ -12,7 +12,8 @@ defineProps<{ drawerOpen: boolean }>();
 const emit = defineEmits<{ toggleDrawer: [] }>();
 const { t } = useI18n();
 const editor = useEditorStore();
-const { tool, canUndo, canRedo, primary } = storeToRefs(editor);
+const { tool, canUndo, canRedo, primary, secondary, useSecondary, penOnly, penDetected } =
+  storeToRefs(editor);
 </script>
 
 <template>
@@ -64,9 +65,30 @@ const { tool, canUndo, canRedo, primary } = storeToRefs(editor);
       class="side-btn color"
       data-action="colors"
       :title="t('side.colors')"
-      :style="{ '--swatch': primary }"
+      :style="{ '--swatch': useSecondary ? secondary : primary }"
       @click="emit('toggleDrawer')"
     />
+    <button
+      class="side-btn"
+      :class="{ active: useSecondary }"
+      data-action="toggle-secondary"
+      :title="t('colors.useSecondaryTitle')"
+      :aria-pressed="useSecondary"
+      @click="editor.toggleSecondary()"
+    >
+      ⇄
+    </button>
+    <button
+      v-if="penDetected"
+      class="side-btn"
+      :class="{ active: penOnly }"
+      data-control="pen-only"
+      :title="t('options.penOnly')"
+      :aria-pressed="penOnly"
+      @click="editor.setPenOnly(!penOnly)"
+    >
+      ✍️
+    </button>
   </aside>
 </template>
 

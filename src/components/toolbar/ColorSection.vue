@@ -8,7 +8,7 @@ import ToolbarGroup from './ToolbarGroup.vue';
 
 const { t } = useI18n();
 const editor = useEditorStore();
-const { primary, secondary } = storeToRefs(editor);
+const { primary, secondary, useSecondary } = storeToRefs(editor);
 const custom = ref<HTMLInputElement>();
 </script>
 
@@ -28,6 +28,16 @@ const custom = ref<HTMLInputElement>();
         @click="editor.swapColors()"
       />
     </div>
+    <button
+      class="act use-secondary"
+      :class="{ active: useSecondary }"
+      data-action="toggle-secondary"
+      :title="t('colors.useSecondaryTitle')"
+      :aria-pressed="useSecondary"
+      @click="editor.toggleSecondary()"
+    >
+      {{ useSecondary ? t('colors.usingSecondary') : t('colors.usingPrimary') }}
+    </button>
     <div class="palette">
       <div
         v-for="color in PALETTE"

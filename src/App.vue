@@ -2,7 +2,7 @@
 import { markRaw, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
-import { createEngine, setTranslator, startEngine } from './engine';
+import { applyLabels, createEngine, setTranslator, startEngine } from './engine';
 import { useEditorStore } from './stores/editor';
 import { usePersistence } from './composables/usePersistence';
 import AppToolbar from './components/toolbar/AppToolbar.vue';
@@ -17,7 +17,7 @@ import QuotaDialog from './components/dialogs/QuotaDialog.vue';
 import ExportDialog from './components/dialogs/ExportDialog.vue';
 import ClearHistoryDialog from './components/dialogs/ClearHistoryDialog.vue';
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 // 引擎產生的 DOM（物件 / 選取的操作列、提示訊息）也使用同一套翻譯
 setTranslator((key, params) => t(key, params ?? {}));
 
@@ -42,6 +42,17 @@ onMounted(async () => {
   // 載入完成的標記（E2E 測試會等待它）
   document.body.dataset.ready = 'true';
 });
+
+// 切換語言：更新引擎產生的 DOM 文字、<html lang>、頁面標題
+watch(
+  locale,
+  l => {
+    applyLabels(engine.stage);
+    document.documentElement.lang = l === 'en' ? 'en' : 'zh-Hant';
+    document.title = l === 'en' ? 'Doodle Pad' : '塗鴉板 Doodle Pad';
+  },
+  { immediate: true },
+);
 
 // 唯讀時停用畫布與快捷鍵（engine/utils/keys 會檢查 body.read-only）
 watch(readOnly, ro => document.body.classList.toggle('read-only', ro), { immediate: true });

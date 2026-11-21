@@ -11,6 +11,8 @@ import {
   type ShapeMode,
 } from '../engine';
 
+const PEN_ONLY_KEY = 'doodle-pad:penOnly';
+
 export type DialogName = 'resize' | 'quota' | 'export' | 'clearHistory';
 
 /**
@@ -34,6 +36,20 @@ export const useEditorStore = defineStore('editor', () => {
   function bind(app: App) {
     engine = markRaw(app);
     (Object.keys(DEFAULT_STATE) as (keyof AppState)[]).forEach(key => mirror(app, key));
+    // 使用者手動設定過「只用筆畫圖」時，沿用該設定（不再自動切換）
+    const saved = readPref(PEN_ONLY_KEY);
+    if (saved !== null) {
+      app.store.set('penOnlyAuto', false);
+      app.store.set('penOnly', saved === 'true');
+    }
+  }
+
+  function readPref(key: string): string | null {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
   }
 
   const e = (): App => {
@@ -53,6 +69,16 @@ export const useEditorStore = defineStore('editor', () => {
     setPrimary: (c: string) => e().store.set('primary', c),
     setSecondary: (c: string) => e().store.set('secondary', c),
     swapColors: () => e().swapColors(),
+    toggleSecondary: () => e().store.set('useSecondary', !e().store.get('useSecondary')),
+    setPenOnly(value: boolean) {
+      e().store.set('penOnlyAuto', false);
+      e().store.set('penOnly', value);
+      try {
+        localStorage.setItem(PEN_ONLY_KEY, String(value));
+      } catch {
+        /* 私密瀏覽等情況 */
+      }
+    },
 
     undo: () => e().history.undo(),
     redo: () => e().history.redo(),
