@@ -1,10 +1,11 @@
 import type { App, Point, Tool } from '../types';
-import { colorFor } from './helpers';
+import { colorFor, finishAlphaStroke, strokeTarget } from './helpers';
 
 function spray(app: App, p: Point, color: string) {
-  const { ctx } = app.canvas;
+  const t = strokeTarget(app, color);
+  const ctx = t.ctx;
   const r = Math.max(4, app.store.get('size') * 2);
-  ctx.fillStyle = color;
+  ctx.fillStyle = t.color;
   for (let i = 0; i < r * 1.5; i++) {
     const ang = Math.random() * Math.PI * 2;
     const d = Math.sqrt(Math.random()) * r;
@@ -23,8 +24,9 @@ const sprayTool: Tool = {
     spray(app, p, color);
     s.timer = setInterval(() => spray(app, s.last, color), 30);
   },
-  onUp(_app, _p, s) {
+  onUp(app, _p, s) {
     clearInterval(s.timer);
+    finishAlphaStroke(app);
   },
 };
 

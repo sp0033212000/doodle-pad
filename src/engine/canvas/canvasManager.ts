@@ -54,6 +54,7 @@ export function createCanvas(app: Pick<App, 'store'>) {
 
     clearOverlay() {
       octx.clearRect(0, 0, overlay.width, overlay.height);
+      overlay.style.opacity = '';
     },
 
     /** 只改變預覽層大小（拖曳調整畫布時使用） */

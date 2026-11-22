@@ -1,8 +1,10 @@
 import type { App, Point, Tool, ToolSession } from '../types';
-import { colorFor, sizeFor, strokeSegment } from './helpers';
+import { colorFor, finishAlphaStroke, sizeFor, strokeSegment, strokeTarget } from './helpers';
 
-const draw = (app: App, a: Point, b: Point, s: ToolSession) =>
-  strokeSegment(app.canvas.ctx, a, b, colorFor(app, s.button), sizeFor(app, s));
+function draw(app: App, a: Point, b: Point, s: ToolSession) {
+  const t = strokeTarget(app, colorFor(app, s.button));
+  strokeSegment(t.ctx, a, b, t.color, sizeFor(app, s));
+}
 
 const brush: Tool = {
   id: 'brush',
@@ -15,6 +17,9 @@ const brush: Tool = {
   },
   onMove(app, p, s) {
     draw(app, s.last, p, s);
+  },
+  onUp(app) {
+    finishAlphaStroke(app);
   },
 };
 

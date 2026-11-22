@@ -71,4 +71,14 @@ const emit = defineEmits<{ close: [] }>();
   width: 32px;
   height: 32px;
 }
+.drawer .palette-row {
+  height: auto;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 260px;
+}
+.drawer .palette-row .slot {
+  width: 32px;
+  height: 32px;
+}
 </style>
