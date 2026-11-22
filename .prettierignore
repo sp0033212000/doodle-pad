@@ -3,3 +3,6 @@ node_modules
 playwright-report
 test-results
 package-lock.json
+
+# Google Search Console 驗證檔，內容需與 Google 提供的完全一致
+public/google*.html
