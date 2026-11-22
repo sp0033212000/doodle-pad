@@ -18,7 +18,7 @@ import { bindDropToOpen } from './services/fileService';
 import { h, clamp } from './utils/dom';
 
 export type { App, AppState, Tool, Point, Rect, ShapeMode } from './types';
-export { PALETTE, SHAPE_MODES, SIZE_RANGE, DEFAULT_STATE } from './config';
+export { PALETTE, SHAPE_MODES, SIZE_RANGE, MAGNIFY_RANGE, DEFAULT_STATE } from './config';
 export { TOOLS, getTool } from './tools';
 export {
   newCanvas,

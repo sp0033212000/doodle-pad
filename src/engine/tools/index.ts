@@ -6,6 +6,7 @@ import spray from './spray';
 import eraser from './eraser';
 import fill from './fill';
 import picker from './picker';
+import magnifier from './magnifier';
 import text from './text';
 import { line, rect, ellipse } from './shapes';
 
@@ -20,6 +21,7 @@ export const TOOLS: Tool[] = [
   eraser,
   fill,
   picker,
+  magnifier,
   text,
   line,
   rect,

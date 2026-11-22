@@ -164,3 +164,17 @@
 .paste-obj.selected .obj-resize {
   display: block;
 }
+
+/* ---------- 像素格線（放大鏡放大時） ---------- */
+.pixel-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.18) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.18) 1px, transparent 1px);
+}
+.pixel-grid[hidden] {
+  display: none;
+}

@@ -69,6 +69,7 @@ export const useEditorStore = defineStore('editor', () => {
     setTool: (id: string) => e().setTool(id),
     setSize: (v: number) => e().store.set('size', v),
     setShapeMode: (m: ShapeMode) => e().store.set('shapeMode', m),
+    setMagnify: (v: number) => e().store.set('magnify', v),
     setPrimary: (c: string) => e().store.set('primary', c),
     setSecondary: (c: string) => e().store.set('secondary', c),
     swapColors: () => e().swapColors(),

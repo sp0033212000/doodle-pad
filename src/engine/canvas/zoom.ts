@@ -1,6 +1,6 @@
 import type { App, Point } from '../types';
 import { clamp } from '../utils/dom';
-import { ZOOM_RANGE, ZOOM_STEPS } from '../config';
+import { PIXEL_GRID_MIN_ZOOM, ZOOM_RANGE, ZOOM_STEPS } from '../config';
 
 /** Safari 的觸控板捏合事件（非標準） */
 interface GestureEvent extends UIEvent {
@@ -22,6 +22,11 @@ export function createZoom(app: App, sizer: HTMLElement) {
   const { store } = app;
   const { holder } = app.canvas;
 
+  // 像素格線放在 sizer（未縮放）裡，線條永遠是清楚的 1 螢幕像素
+  const grid = document.createElement('div');
+  grid.className = 'pixel-grid';
+  sizer.append(grid);
+
   function layout() {
     const z = store.get('zoom');
     const { w, h } = store.get('canvasSize');
@@ -30,6 +35,8 @@ export function createZoom(app: App, sizer: HTMLElement) {
     holder.style.transform = `scale(${z})`;
     holder.style.setProperty('--zoom', String(z));
     holder.classList.toggle('pixelated', z >= 2);
+    grid.hidden = z < PIXEL_GRID_MIN_ZOOM;
+    grid.style.backgroundSize = `${z}px ${z}px`;
   }
   store.on('zoom', layout);
   store.on('canvasSize', layout);
@@ -54,6 +61,17 @@ export function createZoom(app: App, sizer: HTMLElement) {
     const r2 = sizer.getBoundingClientRect();
     st.scrollLeft += r2.left + cx * z - clientX;
     st.scrollTop += r2.top + cy * z - clientY;
+  }
+
+  /** 以倍率 z 放大，並把畫布座標 (cx, cy) 捲到可見區域中央 */
+  function zoomTo(target: number, cx: number, cy: number) {
+    setZoom(target);
+    const z = store.get('zoom');
+    const st = app.stage;
+    const sr = st.getBoundingClientRect();
+    const r = sizer.getBoundingClientRect();
+    st.scrollLeft += r.left + cx * z - (sr.left + st.clientWidth / 2);
+    st.scrollTop += r.top + cy * z - (sr.top + st.clientHeight / 2);
   }
 
   const zoomIn = () => setZoom(ZOOM_STEPS.find(s => s > store.get('zoom') + 1e-6) ?? ZOOM_RANGE.max);
@@ -162,7 +180,7 @@ export function createZoom(app: App, sizer: HTMLElement) {
   }
 
   layout();
-  return { setZoom, zoomIn, zoomOut, reset, bind };
+  return { setZoom, zoomTo, zoomIn, zoomOut, reset, bind };
 }
 
 export type Zoom = ReturnType<typeof createZoom>;

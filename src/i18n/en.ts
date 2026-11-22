@@ -51,6 +51,7 @@ const en: MessageSchema = {
     eraser: 'Eraser',
     fill: 'Fill',
     picker: 'Color picker',
+    magnifier: 'Magnifier',
     text: 'Text',
     line: 'Line',
     rect: 'Rectangle',
@@ -60,6 +61,9 @@ const en: MessageSchema = {
     size: 'Size',
     shape: 'Shape:',
     penOnly: 'Draw with pen only (fingers pan and zoom)',
+    magnify: 'Magnification',
+    magnifyTitle:
+      'Screen pixels per canvas pixel (2–64). Click or drag an area to zoom in; right-click to return to 100%',
     modes: {
       stroke: 'Outline',
       fill: 'Fill',
