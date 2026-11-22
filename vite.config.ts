@@ -34,6 +34,9 @@ export default defineConfig(({ command, isPreview }) => ({
         globPatterns: ['**/*.{js,css,html,svg,png,webmanifest}'],
         // 社群分享圖只給爬蟲用，不需要離線快取
         globIgnores: ['**/og-image.png'],
+        // 有副檔名的網址（sitemap.xml、robots.txt、Google 驗證檔…）是靜態檔案，
+        // 不要用 index.html 回應，否則瀏覽器打開會看到 app 而不是檔案本身
+        navigateFallbackDenylist: [/\/[^/?]+\.[^/?]+$/],
       },
     }),
   ],

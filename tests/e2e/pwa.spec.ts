@@ -27,3 +27,17 @@ test('安裝 service worker 後顯示「已可離線使用」，離線時也能�
   await expect(page.locator('[data-tool=pencil]')).toBeVisible();
   await context.setOffline(false);
 });
+
+test('service worker 不攔截 sitemap、驗證檔等靜態檔案', async ({ page }) => {
+  await openApp(page);
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.reload(); // 確保頁面已由 service worker 控制
+  expect(await page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
+
+  await page.goto('./sitemap.xml');
+  await expect(page.locator('#draw')).toHaveCount(0);
+  expect(await page.content()).toContain('urlset');
+
+  await page.goto('./google251000a8cc645dd7.html');
+  expect(await page.textContent('body')).toContain('google-site-verification');
+});
