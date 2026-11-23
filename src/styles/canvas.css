@@ -74,10 +74,15 @@
   left: calc(6px / var(--zoom));
 }
 
-/* 文字工具的輸入框 */
-.text-input {
+/* ---------- 文字工具：文字框 + 格式列 ---------- */
+.text-box {
   position: absolute;
   display: none;
+  z-index: 4;
+}
+.text-input {
+  display: block;
+  box-sizing: border-box;
   background: rgba(255, 255, 255, 0.7);
   border: 1px dashed var(--accent);
   outline: none;
@@ -88,7 +93,69 @@
   resize: none;
   overflow: hidden;
   white-space: pre;
-  z-index: 2;
+}
+/* 格式列維持固定的螢幕大小（不隨縮放變大變小） */
+.text-bar {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: calc(4px / var(--zoom));
+  white-space: nowrap;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transform: scale(calc(1 / var(--zoom)));
+  transform-origin: 0 100%;
+  font-size: 12px;
+  cursor: default;
+}
+.text-box.bar-below .text-bar {
+  bottom: auto;
+  top: 100%;
+  margin: calc(4px / var(--zoom)) 0 0;
+  transform-origin: 0 0;
+}
+.text-bar select,
+.text-bar .text-size {
+  height: 28px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+}
+.text-bar .text-size {
+  width: 56px;
+  padding: 0 4px;
+}
+.text-bar .obj-btn {
+  box-shadow: none;
+}
+.text-toggle {
+  min-width: 28px;
+  padding: 0 8px;
+}
+.text-toggle.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.t-bold {
+  font-weight: 700;
+}
+.t-italic {
+  font-style: italic;
+  font-family: Georgia, serif;
+}
+.t-underline {
+  text-decoration: underline;
+}
+.t-strike {
+  text-decoration: line-through;
 }
 
 /* ---------- 貼上的物件（可編輯，直到鎖定） ---------- */

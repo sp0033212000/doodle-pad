@@ -158,6 +158,26 @@ export default {
     keepHistory: '保留',
   },
   engine: {
+    text: {
+      font: '字型',
+      fonts: {
+        default: '預設字型',
+        sans: '無襯線',
+        serif: '襯線（明體）',
+        mono: '等寬',
+        hand: '手寫',
+        kai: '楷體',
+      },
+      size: '字體大小（px）',
+      bold: '粗體',
+      italic: '斜體',
+      underline: '底線',
+      strike: '刪除線',
+      align: '對齊',
+      aligns: { left: '靠左', center: '置中', right: '靠右' },
+      fill: '以次要色彩填滿文字背景',
+      fillLabel: '背景',
+    },
     obj: {
       lock: '鎖定到畫布',
       lockTitle: '鎖定到畫布 (Enter)',
