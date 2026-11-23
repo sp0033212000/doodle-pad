@@ -49,6 +49,7 @@ export default {
     eraser: '橡皮擦',
     fill: '油漆桶',
     picker: '滴管',
+    magnifier: '放大鏡',
     text: '文字',
     line: '直線',
     rect: '矩形',
@@ -58,6 +59,8 @@ export default {
     size: '粗細',
     shape: '圖形：',
     penOnly: '只用筆畫圖（手指平移與縮放）',
+    magnify: '放大倍率',
+    magnifyTitle: '1 個像素放大成幾個螢幕像素（2–64）。點一下或拖曳範圍放大，右鍵縮回 100%',
     modes: {
       stroke: '外框',
       fill: '填滿',

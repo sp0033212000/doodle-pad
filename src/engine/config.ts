@@ -40,8 +40,14 @@ export const FILL_TOLERANCE = 32;
 export const CANVAS_MIN = 50;
 export const CANVAS_MAX = 8000;
 export const CANVAS_DEFAULT = { minW: 400, maxW: 1000, minH: 300, maxH: 620 } as const;
-export const ZOOM_RANGE = { min: 0.1, max: 8 } as const;
-export const ZOOM_STEPS = [0.1, 0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 8] as const;
+export const ZOOM_RANGE = { min: 0.1, max: 64 } as const;
+export const ZOOM_STEPS = [0.1, 0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64] as const;
+
+/** 放大鏡倍率（1 個畫布像素 = 幾個螢幕像素） */
+export const MAGNIFY_RANGE = { min: 2, max: 64 } as const;
+
+/** 放大到這個倍率以上顯示像素格線 */
+export const PIXEL_GRID_MIN_ZOOM = 4;
 
 /** 復原紀錄上限 */
 export const HISTORY_LIMITS = {
@@ -63,6 +69,7 @@ export const DEFAULT_STATE: AppState = {
   historyBytes: 0,
   historyOverQuota: false,
   zoom: 1,
+  magnify: 8,
   hasSelection: false,
   hasRegion: false,
   canPasteInternal: false,

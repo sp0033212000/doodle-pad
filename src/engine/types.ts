@@ -47,6 +47,8 @@ export interface AppState {
   /** 復原紀錄是否超過容量上限 */
   historyOverQuota: boolean;
   zoom: number;
+  /** 放大鏡倍率 */
+  magnify: number;
   hasSelection: boolean;
   hasRegion: boolean;
   canPasteInternal: boolean;
