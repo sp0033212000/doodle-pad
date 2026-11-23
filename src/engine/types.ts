@@ -22,6 +22,23 @@ export interface Rect extends Point, Size {}
 
 export type ShapeMode = 'stroke' | 'fill' | 'both';
 
+export type TextAlign = 'left' | 'center' | 'right';
+
+/** 文字工具的格式 */
+export interface TextStyle {
+  /** 字型代號（見 config.ts 的 TEXT_FONTS） */
+  font: string;
+  /** 字級（畫布像素） */
+  size: number;
+  bold: boolean;
+  italic: boolean;
+  underline: boolean;
+  strike: boolean;
+  align: TextAlign;
+  /** 以次色填滿文字背景 */
+  fill: boolean;
+}
+
 /** 與 ImageData 相容的像素緩衝區（純資料，可在非 DOM 環境測試） */
 export interface PixelBuffer {
   readonly width: number;
@@ -49,6 +66,7 @@ export interface AppState {
   zoom: number;
   /** 放大鏡倍率 */
   magnify: number;
+  textStyle: TextStyle;
   hasSelection: boolean;
   hasRegion: boolean;
   canPasteInternal: boolean;

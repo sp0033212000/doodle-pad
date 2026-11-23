@@ -163,6 +163,26 @@ const en: MessageSchema = {
     keepHistory: 'Keep',
   },
   engine: {
+    text: {
+      font: 'Font',
+      fonts: {
+        default: 'Default',
+        sans: 'Sans-serif',
+        serif: 'Serif',
+        mono: 'Monospace',
+        hand: 'Handwriting',
+        kai: 'Kai (楷體)',
+      },
+      size: 'Font size (px)',
+      bold: 'Bold',
+      italic: 'Italic',
+      underline: 'Underline',
+      strike: 'Strikethrough',
+      align: 'Alignment',
+      aligns: { left: 'Left', center: 'Center', right: 'Right' },
+      fill: 'Fill the text background with the secondary colour',
+      fillLabel: 'Background',
+    },
     obj: {
       lock: 'Lock to canvas',
       lockTitle: 'Lock to canvas (Enter)',

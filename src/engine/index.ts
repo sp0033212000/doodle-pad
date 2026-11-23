@@ -17,7 +17,7 @@ import { createImageOps } from './services/imageOps';
 import { bindDropToOpen } from './services/fileService';
 import { h, clamp } from './utils/dom';
 
-export type { App, AppState, Tool, Point, Rect, ShapeMode } from './types';
+export type { App, AppState, Tool, Point, Rect, ShapeMode, TextStyle } from './types';
 export { PALETTE, SHAPE_MODES, SIZE_RANGE, MAGNIFY_RANGE, DEFAULT_STATE } from './config';
 export { TOOLS, getTool } from './tools';
 export {
